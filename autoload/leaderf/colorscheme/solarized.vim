@@ -1,4 +1,4 @@
-function s:SetLeaderFColorscheme() abort
+function! leaderf#colorscheme#solarized#init() abort
     if &background == 'dark'
         let s:palette = {
                     \ 'match':           { 'guifg': '#b58900', 'ctermfg': '136'   },
@@ -46,9 +46,9 @@ function s:SetLeaderFColorscheme() abort
     let g:leaderf#colorscheme#solarized#palette = leaderf#colorscheme#mergePalette(s:palette)
 endfunction
 
-call s:SetLeaderFColorscheme()
+call leaderf#colorscheme#solarized#init()
 
 augroup VimLeaderFSolarizedTheme
     autocmd!
-    autocmd ColorschemePre * call <SID>SetLeaderFColorscheme()
+    autocmd ColorschemePre * call leaderf#colorscheme#solarized#init()
 augroup END
