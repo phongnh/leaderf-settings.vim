@@ -45,10 +45,3 @@ function! leaderf#colorscheme#solarized#init() abort
 
     let g:leaderf#colorscheme#solarized#palette = leaderf#colorscheme#mergePalette(s:palette)
 endfunction
-
-call leaderf#colorscheme#solarized#init()
-
-augroup VimLeaderFSolarizedTheme
-    autocmd!
-    autocmd ColorschemePre * call leaderf#colorscheme#solarized#init()
-augroup END
