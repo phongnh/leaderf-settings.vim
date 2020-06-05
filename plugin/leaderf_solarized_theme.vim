@@ -9,7 +9,7 @@ if get(g:, 'leaderf_solarized_theme', 0)
 
     function! s:InitSolarizedColorscheme() abort
         call leaderf#colorscheme#solarized#init()
-        let g:Lf_PopupPalette = leaderf#colorscheme#popup#solarized#init()
+        let g:Lf_PopupPalette = leaderf#colorscheme#solarized#popup_init()
     endfunction
 
     call s:InitSolarizedColorscheme()
