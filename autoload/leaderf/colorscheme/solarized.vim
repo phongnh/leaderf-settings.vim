@@ -16,7 +16,7 @@ function! leaderf#colorscheme#solarized#init() abort
                     \ 'stlFuzzyMode':    { 'guifg': '#eee8d5', 'ctermfg': '224',  'guibg': '#586e75', 'ctermbg': '60',  'gui': 'NONE', 'cterm': 'NONE' },
                     \ 'stlRegexMode':    { 'guifg': '#eee8d5', 'ctermfg': '224',  'guibg': '#dc322f', 'ctermbg': '166', 'gui': 'NONE', 'cterm': 'NONE' },
                     \ 'stlCwd':          { 'guifg': '#93a1a1', 'ctermfg': '109',  'guibg': '#073642', 'ctermbg': '23',  'gui': 'NONE', 'cterm': 'NONE' },
-                    \ 'stlBlank':        { 'guifg': 'NONE',    'ctermfg': 'NONE', 'guibg': '#073642', 'ctermbg': '23',  'gui': 'NONE', 'cterm': 'NONE' },
+                    \ 'stlBlank':        { 'guifg': '#93a1a1', 'ctermfg': '109',  'guibg': '#073642', 'ctermbg': '23',  'gui': 'NONE', 'cterm': 'NONE' },
                     \ 'stlLineInfo':     { 'guifg': '#eee8d5', 'ctermfg': '224',  'guibg': '#657b83', 'ctermbg': '66',  'gui': 'NONE', 'cterm': 'NONE' },
                     \ 'stlTotal':        { 'guifg': '#fdf6e3', 'ctermfg': '230',  'guibg': '#93a1a1', 'ctermbg': '109', 'gui': 'NONE', 'cterm': 'NONE' },
                     \ }
@@ -37,7 +37,7 @@ function! leaderf#colorscheme#solarized#init() abort
                     \ 'stlFuzzyMode':    { 'guifg': '#eee8d5', 'ctermfg': '224',  'guibg': '#93a1a1', 'ctermbg': '109', 'gui': 'NONE', 'cterm': 'NONE' },
                     \ 'stlRegexMode':    { 'guifg': '#eee8d5', 'ctermfg': '224',  'guibg': '#dc322f', 'ctermbg': '166', 'gui': 'NONE', 'cterm': 'NONE' },
                     \ 'stlCwd':          { 'guifg': '#586e75', 'ctermfg': '60',   'guibg': '#eee8d5', 'ctermbg': '224', 'gui': 'NONE', 'cterm': 'NONE' },
-                    \ 'stlBlank':        { 'guifg': 'NONE',    'ctermfg': 'NONE', 'guibg': '#eee8d5', 'ctermbg': '224', 'gui': 'NONE', 'cterm': 'NONE' },
+                    \ 'stlBlank':        { 'guifg': '#586e75', 'ctermfg': '60',   'guibg': '#eee8d5', 'ctermbg': '224', 'gui': 'NONE', 'cterm': 'NONE' },
                     \ 'stlLineInfo':     { 'guifg': '#eee8d5', 'ctermfg': '224',  'guibg': '#839496', 'ctermbg': '102', 'gui': 'NONE', 'cterm': 'NONE' },
                     \ 'stlTotal':        { 'guifg': '#fdf6e3', 'ctermfg': '230',  'guibg': '#586e75', 'ctermbg': '60',  'gui': 'NONE', 'cterm': 'NONE' },
                     \ }
@@ -45,6 +45,8 @@ function! leaderf#colorscheme#solarized#init() abort
 
     let g:leaderf#colorscheme#solarized#palette = leaderf#colorscheme#mergePalette(s:palette)
 endfunction
+
+call leaderf#colorscheme#solarized#init()
 
 " Solarized theme for LeaderF popup window
 function! leaderf#colorscheme#solarized#popup_init() abort
