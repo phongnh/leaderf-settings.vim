@@ -106,7 +106,7 @@ let s:Lf_FindCommands = {
             \ 'fd': 'fd --color=never --no-ignore-vcs --hidden --type file "%s"',
             \ }
 
-let s:Lf_FindWithFollowsCommand = {
+let s:Lf_FindWithFollowsCommands = {
             \ 'rg': 'rg --color=never --no-ignore-vcs --ignore-dot --ignore-parent --hidden --follow --files "%s"',
             \ 'fd': 'fd --color=never --no-ignore-vcs --hidden --follow --type file "%s"',
             \ }
@@ -118,7 +118,7 @@ endfunction
 
 function! s:BuildExternalCommand() abort
     if s:Lf_FollowLinks
-        let l:external_command = s:Lf_FindWithFollowsCommand[s:Lf_CurrentCommand]
+        let l:external_command = s:Lf_FindWithFollowsCommands[s:Lf_CurrentCommand]
     else
         let l:external_command = s:Lf_FindCommands[s:Lf_CurrentCommand]
     endif
