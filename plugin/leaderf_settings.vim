@@ -91,6 +91,18 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?', '~$*', '*.bak', '*.exe', '*.o', '*.so', '*.py[co]']
             \ }
 
+function! s:LeaderfRoot() abort
+    let current = get(g:, 'Lf_WorkingDirectoryMode', 'c')
+    try
+        let g:Lf_WorkingDirectoryMode = 'Ac'
+        :LeaderfFile
+    finally
+        let g:Lf_WorkingDirectoryMode = current
+    endtry
+endfunction
+
+command! -bar LeaderfRoot call <SID>LeaderfRoot()
+
 let s:Lf_AvailableCommands = filter(['rg', 'fd'], 'executable(v:val)')
 
 if empty(s:Lf_AvailableCommands)
@@ -166,18 +178,6 @@ function! s:ToggleFollowLinks() abort
 endfunction
 
 command! ToggleLeaderfFollowLinks call <SID>ToggleFollowLinks()
-
-function! s:LeaderfRoot() abort
-    let current = get(g:, 'Lf_WorkingDirectoryMode', 'c')
-    try
-        let g:Lf_WorkingDirectoryMode = 'Ac'
-        :LeaderfFile
-    finally
-        let g:Lf_WorkingDirectoryMode = current
-    endtry
-endfunction
-
-command! -bar LeaderfRoot call <SID>LeaderfRoot()
 
 call s:DetectCurrentCommand()
 call s:BuildExternalCommand()
