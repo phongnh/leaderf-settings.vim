@@ -86,51 +86,75 @@ let g:Lf_CommandMap = {
 " These options are passed to external tools (rg, fd and pt, ...)
 let g:Lf_ShowHidden  = 0
 
-let g:Lf_FindTool    = get(g:, 'Lf_FindTool', 'rg')
-let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 0)
-let s:Lf_FollowLinks = g:Lf_FollowLinks
-
 let g:Lf_WildIgnore = {
             \ 'dir': ['.svn', '.git', '.hg', 'node_modules', '.gems', 'gems'],
             \ 'file': ['*.sw?', '~$*', '*.bak', '*.exe', '*.o', '*.so', '*.py[co]']
             \ }
 
-let s:Lf_FindTools = {
+let s:Lf_AvailableCommands = filter(['rg', 'fd'], 'executable(v:val)')
+
+if empty(s:Lf_AvailableCommands)
+    finish
+endif
+
+let g:Lf_FindTool    = get(g:, 'Lf_FindTool', 'rg')
+let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 0)
+let s:Lf_FollowLinks = g:Lf_FollowLinks
+
+let s:Lf_FindCommands = {
             \ 'rg': 'rg "%s" --color=never --no-ignore-vcs --ignore-dot --ignore-parent --hidden --files',
             \ 'fd': 'fd --color=never --no-ignore-vcs --hidden --type file "%s"',
             \ }
 
-let s:Lf_FindWithFollowsTools = {
+let s:Lf_FindWithFollowsCommand = {
             \ 'rg': 'rg --color=never --no-ignore-vcs --ignore-dot --ignore-parent --hidden --follow --files "%s"',
             \ 'fd': 'fd --color=never --no-ignore-vcs --hidden --follow --type file "%s"',
             \ }
 
-function! s:DetectLeaderfAvailableFindTools() abort
-    let s:Lf_AvailableFindTools = []
-    for cmd in ['rg', 'fd']
-        if executable(cmd)
-            call add(s:Lf_AvailableFindTools, cmd)
-        endif
-    endfor
+function! s:DetectCurrentCommand() abort
+    let idx = index(s:Lf_AvailableCommands, g:Lf_FindTool)
+    let s:Lf_CurrentCommand = get(s:Lf_AvailableCommands, idx > -1 ? idx : 0)
 endfunction
 
-call s:DetectLeaderfAvailableFindTools()
-
-function! s:SetupLeaderfExternalCommand() abort
-    let l:tools = s:Lf_FollowLinks ? s:Lf_FindWithFollowsTools : s:Lf_FindTools
-    let idx = index(s:Lf_AvailableFindTools, g:Lf_FindTool)
-    let cmd = get(s:Lf_AvailableFindTools, idx > -1 ? idx : 0)
-    let s:Lf_FindTool = get(l:tools, cmd, '')
-    if strlen(s:Lf_FindTool)
-        let g:Lf_ExternalCommand = s:Lf_FindTool
+function! s:BuildExternalCommand() abort
+    if s:Lf_FollowLinks
+        let l:external_command = s:Lf_FindWithFollowsCommand[s:Lf_CurrentCommand]
     else
-        unlet! g:Lf_ExternalCommand
+        let l:external_command = s:Lf_FindCommands[s:Lf_CurrentCommand]
     endif
+    let g:Lf_ExternalCommand = l:external_command
 endfunction
 
-call s:SetupLeaderfExternalCommand()
+function! s:PrintCurrentCommandInfo() abort
+    echo 'LeaderF is using command `' . g:Lf_ExternalCommand . '`!'
+endfunction
 
-function! s:ToggleLeaderfFollowLinks() abort
+command! PrintLeaderfCurrentCommandInfo call <SID>PrintCurrentCommandInfo()
+
+function! s:ChangeExternalCommand(bang, command) abort
+    " Reset to default command
+    if a:bang
+        call s:DetectCurrentCommand()
+    elseif strlen(a:command)
+        if index(s:Lf_AvailableCommands, a:command) == -1
+            return
+        endif
+        let s:Lf_CurrentCommand = a:command
+    else
+        let idx = index(s:Lf_AvailableCommands, s:Lf_CurrentCommand)
+        let s:Lf_CurrentCommand = get(s:Lf_AvailableCommands, idx + 1, s:Lf_AvailableCommands[0])
+    endif
+    call s:BuildExternalCommand()
+    call s:PrintCurrentCommandInfo()
+endfunction
+
+function! s:ListAvailableCommands(...) abort
+    return s:Lf_AvailableCommands
+endfunction
+
+command! -nargs=? -bang -complete=customlist,<SID>ListAvailableCommands ChangeLeaderfExternalCommand call <SID>ChangeExternalCommand(<bang>0, <q-args>)
+
+function! s:ToggleFollowLinks() abort
     if s:Lf_FollowLinks == 0
         let s:Lf_FollowLinks = 1
         echo 'LeaderF follows symlinks!'
@@ -138,10 +162,10 @@ function! s:ToggleLeaderfFollowLinks() abort
         let s:Lf_FollowLinks = 0
         echo 'LeaderF does not follow symlinks!'
     endif
-    call s:SetupLeaderfExternalCommand()
+    call s:BuildExternalCommand()
 endfunction
 
-command! ToggleLeaderfFollowLinks call <SID>ToggleLeaderfFollowLinks()
+command! ToggleLeaderfFollowLinks call <SID>ToggleFollowLinks()
 
 function! s:LeaderfRoot() abort
     let current = get(g:, 'Lf_WorkingDirectoryMode', 'c')
@@ -154,5 +178,8 @@ function! s:LeaderfRoot() abort
 endfunction
 
 command! -bar LeaderfRoot call <SID>LeaderfRoot()
+
+call s:DetectCurrentCommand()
+call s:BuildExternalCommand()
 
 let g:loaded_leaderf_settings_vim = 1
