@@ -52,8 +52,9 @@ let g:Lf_WorkingDirectoryMode = 'c'
 
 let g:Lf_RgConfig = [
             \ '-H',
-            \ '--line-number',
             \ '--no-heading',
+            \ '--line-number',
+            \ '--column',
             \ '--hidden',
             \ '--smart-case'
             \ ]
