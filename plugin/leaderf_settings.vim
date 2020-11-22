@@ -7,8 +7,7 @@ if exists('g:loaded_leaderf_settings_vim')
     finish
 endif
 
-let g:Lf_SolarizedTheme = get(g:, 'Lf_SolarizedTheme', 0)
-if g:Lf_SolarizedTheme
+if get(g:, 'Lf_SolarizedTheme', 0)
     let g:Lf_StlColorscheme = 'solarized'
 
     function! s:InitSolarizedColorscheme() abort
@@ -24,23 +23,20 @@ if g:Lf_SolarizedTheme
     augroup END
 endif
 
-let g:Lf_Powerline     = get(g:, 'Lf_Powerline', 0)
-let g:Lf_Popup         = get(g:, 'Lf_Popup', 0)
-let g:Lf_GrepIngoreVCS = get(g:, 'Lf_GrepIngoreVCS', 0)
-let g:Lf_WindowHeight  = 0.30
-let g:Lf_MruMaxFiles   = 200
-let g:Lf_CursorBlink   = 1
-let g:Lf_PreviewResult = { 'BufTag': 0, 'Function': 0 }
-
 " Powerline Separator
-if g:Lf_Powerline
+if get(g:, 'Lf_Powerline', 0)
     let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2" }
 else
     let g:Lf_StlSeparator = { 'left': '', 'right': '' }
 endif
 
+let g:Lf_WindowHeight  = 0.30
+let g:Lf_MruMaxFiles   = 200
+let g:Lf_CursorBlink   = 1
+let g:Lf_PreviewResult = { 'BufTag': 0, 'Function': 0 }
+
 " Popup Settings
-if g:Lf_Popup && ((exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_win_set_config') && has('nvim-0.4.2')))
+if get(g:, 'Lf_Popup', 0) && ((exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_win_set_config') && has('nvim-0.4.2')))
     let g:Lf_PopupShowStatusline  = 0
     let g:Lf_PreviewInPopup       = 1
     let g:Lf_PopupPreviewPosition = 'bottom'
@@ -62,7 +58,7 @@ let g:Lf_RgConfig = [
             \ '--smart-case'
             \ ]
 
-if g:Lf_GrepIngoreVCS
+if get(g:, 'Lf_GrepIngoreVCS', 0)
     call add(g:Lf_RgConfig, '--no-ignore-vcs')
 endif
 
