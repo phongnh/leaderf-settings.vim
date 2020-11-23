@@ -115,17 +115,21 @@ let s:Lf_FindCommands = {
             \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden',
             \ }
 
+function! s:BuildFindCommand() abort
+    let l:cmd = s:Lf_FindCommands[s:Lf_CurrentCommand]
+    if s:Lf_FollowLinks
+        let l:cmd .= ' --follow'
+    endif
+    return l:cmd
+endfunction
+
 function! s:DetectCurrentCommand() abort
     let idx = index(s:Lf_AvailableCommands, g:Lf_FindTool)
     let s:Lf_CurrentCommand = get(s:Lf_AvailableCommands, idx > -1 ? idx : 0)
 endfunction
 
 function! s:BuildExternalCommand() abort
-    let l:external_command = s:Lf_FindCommands[s:Lf_CurrentCommand]
-    if s:Lf_FollowLinks
-        let l:external_command .= ' --follow'
-    endif
-    let g:Lf_ExternalCommand = l:external_command
+    let g:Lf_ExternalCommand = s:BuildFindCommand()
 endfunction
 
 function! s:PrintCurrentCommandInfo() abort
