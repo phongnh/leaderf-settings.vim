@@ -25,7 +25,11 @@ endif
 
 " Powerline Separator
 if get(g:, 'Lf_Powerline', 0)
-    let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2" }
+    if get(g:, 'Lf_Powerline_Style', 'default') == 'curvy'
+        let g:Lf_StlSeparator = { 'left': "\ue0b4", 'right': "\ue0b6" }
+    else
+        let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2" }
+    endif
 else
     let g:Lf_StlSeparator = { 'left': '', 'right': '' }
 endif
