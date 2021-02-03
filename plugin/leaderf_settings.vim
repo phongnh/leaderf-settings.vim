@@ -25,11 +25,30 @@ endif
 
 " Powerline Separator
 if get(g:, 'Lf_Powerline', 0)
-    if get(g:, 'Lf_Powerline_Style', 'default') == 'curvy'
-        let g:Lf_StlSeparator = { 'left': "\ue0b4", 'right': "\ue0b6" }
-    else
-        let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2" }
-    endif
+    let s:powerline_separator_styles = {
+                \ 'default': { 'left': "\ue0b0", 'right': "\ue0b2" },
+                \ 'curvy':   { 'left': "\ue0b4", 'right': "\ue0b6" },
+                \ 'angly1':  { 'left': "\ue0b8", 'right': "\ue0ba" },
+                \ 'angly2':  { 'left': "\ue0bc", 'right': "\ue0be" },
+                \ 'angly3':  { 'left': "\ue0b8", 'right': "\ue0be" },
+                \ 'angly4':  { 'left': "\ue0bc", 'right': "\ue0ba" },
+                \ 'custom':  { 'left': "\ue0d2", 'right': "\ue0d4" },
+                \ }
+
+    function! s:Rand() abort
+        return str2nr(matchstr(reltimestr(reltime()), '\v\.@<=\d+')[1:])
+    endfunction
+
+    function! s:GetSeparator(style) abort
+        let l:style = a:style
+        if l:style ==? 'random'
+            let l:style = keys(s:powerline_separator_styles)[s:Rand() % len(s:powerline_separator_styles)]
+        endif
+
+        return get(s:powerline_separator_styles, l:style, s:powerline_separator_styles['default'])
+    endfunction
+
+    let g:Lf_StlSeparator = s:GetSeparator(get(g:, 'Lf_Powerline_Style', 'default'))
 else
     let g:Lf_StlSeparator = { 'left': '', 'right': '' }
 endif
