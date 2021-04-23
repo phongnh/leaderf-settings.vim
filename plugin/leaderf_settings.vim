@@ -132,14 +132,24 @@ endif
 let g:Lf_FindTool    = get(g:, 'Lf_FindTool', 'rg')
 let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 0)
 let s:Lf_FollowLinks = g:Lf_FollowLinks
+let g:Lf_NoIgnores   = get(g:, 'Lf_NoIgnores', 0)
+let s:Lf_NoIgnores   = g:Lf_NoIgnores
 
 let s:Lf_FindCommands = {
             \ 'rg': 'rg "%s" --files --color never --no-ignore-vcs --ignore-dot --ignore-parent --hidden',
             \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden',
             \ }
 
+let s:Lf_FindAllCommands = {
+            \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden',
+            \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden',
+            \ }
+
 function! s:BuildFindCommand() abort
     let l:cmd = s:Lf_FindCommands[s:Lf_CurrentCommand]
+    if s:Lf_NoIgnores
+        let l:cmd = s:Lf_FindAllCommands[s:Lf_CurrentCommand]
+    endif
     if s:Lf_FollowLinks
         let l:cmd .= ' --follow'
     endif
@@ -196,6 +206,19 @@ function! s:ToggleFollowLinks() abort
 endfunction
 
 command! ToggleLeaderfFollowLinks call <SID>ToggleFollowLinks()
+
+function! s:ToggleNoIgnores() abort
+    if s:Lf_NoIgnores == 0
+        let s:Lf_NoIgnores = 1
+        echo 'LeaderF does not respect ignores!'
+    else
+        let s:Lf_NoIgnores = 0
+        echo 'LeaderF respects ignores!'
+    endif
+    call s:BuildExternalCommand()
+endfunction
+
+command! ToggleLeaderfNoIgnores call <SID>ToggleNoIgnores()
 
 call s:DetectCurrentCommand()
 call s:BuildExternalCommand()
