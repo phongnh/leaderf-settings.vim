@@ -111,7 +111,7 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?', '~$*', '*.bak', '*.exe', '*.o', '*.so', '*.py[co]']
             \ }
 
-function! s:LeaderfRoot() abort
+function! s:LeaderfFileRoot() abort
     let current = get(g:, 'Lf_WorkingDirectoryMode', 'c')
     try
         let g:Lf_WorkingDirectoryMode = 'Ac'
@@ -121,7 +121,8 @@ function! s:LeaderfRoot() abort
     endtry
 endfunction
 
-command! -bar LeaderfRoot call <SID>LeaderfRoot()
+command! -bar LeaderfRoot     call <SID>LeaderfFileRoot()
+command! -bar LeaderfFileRoot call <SID>LeaderfFileRoot()
 
 let s:Lf_AvailableCommands = filter(['rg', 'fd'], 'executable(v:val)')
 
