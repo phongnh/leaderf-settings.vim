@@ -72,6 +72,7 @@ let g:Lf_UseMemoryCache = 0
 
 let g:Lf_NoChdir              = 1
 let g:Lf_WorkingDirectoryMode = 'c'
+let g:Lf_RootMarkers          = ['.git', '.hg', '.svn', '.hex', 'mix.exs', 'Gemfile']
 
 let g:Lf_RgConfig = [
             \ '-H',
