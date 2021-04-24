@@ -126,6 +126,7 @@ command! -bar LeaderfRoot call <SID>LeaderfRoot()
 let s:Lf_AvailableCommands = filter(['rg', 'fd'], 'executable(v:val)')
 
 if empty(s:Lf_AvailableCommands)
+    command! -nargs=? -complete=dir LeaderfFileAll :LeaderfFile <args>
     finish
 endif
 
@@ -219,6 +220,20 @@ function! s:ToggleNoIgnores() abort
 endfunction
 
 command! ToggleLeaderfNoIgnores call <SID>ToggleNoIgnores()
+
+function! s:LeaderfFileAll(dir) abort
+    let current = s:Lf_NoIgnores
+    try
+        let s:Lf_NoIgnores = 1
+        call s:BuildExternalCommand()
+        execute 'LeaderfFile' a:dir
+    finally
+        let s:Lf_NoIgnores = current
+        call s:BuildExternalCommand()
+    endtry
+endfunction
+
+command! -nargs=? -complete=dir LeaderfFileAll call <SID>LeaderfFileAll(<q-args>)
 
 call s:DetectCurrentCommand()
 call s:BuildExternalCommand()
