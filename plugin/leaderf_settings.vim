@@ -28,10 +28,12 @@ if get(g:, 'Lf_Powerline', 0)
     let s:powerline_separator_styles = {
                 \ 'default': { 'left': "\ue0b0", 'right': "\ue0b2" },
                 \ 'curvy':   { 'left': "\ue0b4", 'right': "\ue0b6" },
-                \ 'angly1':  { 'left': "\ue0b8", 'right': "\ue0ba" },
-                \ 'angly2':  { 'left': "\ue0bc", 'right': "\ue0be" },
+                \ 'angly1':  { 'left': "\ue0b8", 'right': "\ue0be" },
+                \ 'angly2':  { 'left': "\ue0bc", 'right': "\ue0ba" },
                 \ 'angly3':  { 'left': "\ue0b8", 'right': "\ue0be" },
                 \ 'angly4':  { 'left': "\ue0bc", 'right': "\ue0ba" },
+                \ 'angly5':  { 'left': "\ue0b8", 'right': "\ue0ba" },
+                \ 'angly6':  { 'left': "\ue0bc", 'right': "\ue0be" },
                 \ 'custom':  { 'left': "\ue0d2", 'right': "\ue0d4" },
                 \ }
 
