@@ -34,7 +34,6 @@ if get(g:, 'Lf_Powerline', 0)
                 \ 'angly4':  { 'left': "\ue0bc", 'right': "\ue0ba" },
                 \ 'angly5':  { 'left': "\ue0b8", 'right': "\ue0ba" },
                 \ 'angly6':  { 'left': "\ue0bc", 'right': "\ue0be" },
-                \ 'custom':  { 'left': "\ue0d2", 'right': "\ue0d4" },
                 \ }
 
     function! s:Rand() abort
