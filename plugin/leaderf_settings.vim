@@ -73,7 +73,17 @@ let g:Lf_UseMemoryCache = 0
 
 let g:Lf_NoChdir              = 1
 let g:Lf_WorkingDirectoryMode = 'c'
-let g:Lf_RootMarkers          = ['.git', '.hg', '.svn', '.hex', 'mix.exs', 'Gemfile']
+
+let g:Lf_FileRootMarkers = [
+            \ 'Gemfile',
+            \ 'rebar.config',
+            \ 'mix.exs',
+            \ 'Cargo.toml',
+            \ 'shard.yml',
+            \ 'go.mod'
+            \ ]
+
+let g:Lf_RootMarkers = ['.git', '.hg', '.svn', '.bzr', '_darcs'] + g:Lf_FileRootMarkers
 
 let g:Lf_RgConfig = [
             \ '-H',
@@ -116,7 +126,7 @@ let g:Lf_WildIgnore = {
 function! s:LeaderfFileRoot() abort
     let current = get(g:, 'Lf_WorkingDirectoryMode', 'c')
     try
-        let g:Lf_WorkingDirectoryMode = 'Ac'
+        let g:Lf_WorkingDirectoryMode = 'AF'
         :LeaderfFile
     finally
         let g:Lf_WorkingDirectoryMode = current
