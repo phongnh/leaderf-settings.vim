@@ -85,6 +85,19 @@ let g:Lf_FileRootMarkers = [
 
 let g:Lf_RootMarkers = ['.git', '.hg', '.svn', '.bzr', '_darcs'] + g:Lf_FileRootMarkers
 
+let s:Lf_IgnoredRootDirs = [
+            \ '/',
+            \ '/root',
+            \ '/Users',
+            \ '/home',
+            \ '/usr',
+            \ '/usr/local',
+            \ '/opt',
+            \ '/etc',
+            \ '/var',
+            \ expand('~'),
+            \ ]
+
 let g:Lf_RgConfig = [
             \ '-H',
             \ '--no-heading',
@@ -122,6 +135,40 @@ let g:Lf_WildIgnore = {
             \ 'dir': ['.svn', '.git', '.hg', 'node_modules', '.gems', 'gems'],
             \ 'file': ['*.sw?', '~$*', '*.bak', '*.exe', '*.o', '*.so', '*.py[co]']
             \ }
+
+function! s:FindProjectDir(starting_dir) abort
+    if empty(a:starting_dir)
+        return ''
+    endif
+
+    let l:root_dir = ''
+
+    for l:root_marker in g:Lf_RootMarkers
+        if index(g:Lf_FileRootMarkers, l:root_marker) > -1
+            let l:root_dir = findfile(l:root_marker, a:starting_dir . ';')
+        else
+            let l:root_dir = finddir(l:root_marker, a:starting_dir . ';')
+        endif
+        let l:root_dir = substitute(l:root_dir, l:root_marker . '$', '', '')
+
+        if strlen(l:root_dir)
+            let l:root_dir = fnamemodify(l:root_dir, ':p:h')
+            break
+        endif
+    endfor
+
+    if empty(l:root_dir) || index(s:Lf_IgnoredRootDirs, l:root_dir) > -1
+        if stridx(a:starting_dir, getcwd()) == 0
+            let l:root_dir = getcwd()
+        else
+            let l:root_dir = a:starting_dir
+        endif
+    endif
+
+    return fnamemodify(l:root_dir, ':~')
+endfunction
+
+command! -bar LeaderfFileSmartRoot execute 'LeaderfFile' s:FindProjectDir(expand('%:p:h'))
 
 function! s:LeaderfFileRoot() abort
     let current = get(g:, 'Lf_WorkingDirectoryMode', 'c')
