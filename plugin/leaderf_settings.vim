@@ -158,14 +158,16 @@ function! s:FindProjectDir(starting_dir) abort
     endfor
 
     if empty(l:root_dir) || index(s:Lf_IgnoredRootDirs, l:root_dir) > -1
-        if stridx(a:starting_dir, getcwd()) == 0
+        if index(s:Lf_IgnoredRootDirs, getcwd()) > -1
+            let l:root_dir = a:starting_dir
+        elseif stridx(a:starting_dir, getcwd()) == 0
             let l:root_dir = getcwd()
         else
             let l:root_dir = a:starting_dir
         endif
     endif
 
-    return fnamemodify(l:root_dir, ':~')
+    return fnamemodify(l:root_dir, ':p:~')
 endfunction
 
 command! -bar LeaderfFileSmartRoot execute 'LeaderfFile' s:FindProjectDir(expand('%:p:h'))
