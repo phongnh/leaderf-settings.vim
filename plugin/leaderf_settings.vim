@@ -219,25 +219,25 @@ function! s:BuildFindCommand() abort
     return l:cmd
 endfunction
 
-function! s:DetectCurrentCommand() abort
+function! s:DetectLeaderfCurrentCommand() abort
     let idx = index(s:Lf_AvailableCommands, g:Lf_FindTool)
     let s:Lf_CurrentCommand = get(s:Lf_AvailableCommands, idx > -1 ? idx : 0)
 endfunction
 
-function! s:BuildExternalCommand() abort
+function! s:BuildLeaderfExternalCommand() abort
     let g:Lf_ExternalCommand = s:BuildFindCommand()
 endfunction
 
-function! s:PrintCurrentCommandInfo() abort
+function! s:PrintLeaderfCurrentCommandInfo() abort
     echo 'LeaderF is using command `' . g:Lf_ExternalCommand . '`!'
 endfunction
 
-command! PrintLeaderfCurrentCommandInfo call <SID>PrintCurrentCommandInfo()
+command! PrintLeaderfCurrentCommandInfo call <SID>PrintLeaderfCurrentCommandInfo()
 
-function! s:ChangeExternalCommand(bang, command) abort
+function! s:ChangeLeaderfExternalCommand(bang, command) abort
     " Reset to default command
     if a:bang
-        call s:DetectCurrentCommand()
+        call s:DetectLeaderfCurrentCommand()
     elseif strlen(a:command)
         if index(s:Lf_AvailableCommands, a:command) == -1
             return
@@ -247,17 +247,17 @@ function! s:ChangeExternalCommand(bang, command) abort
         let idx = index(s:Lf_AvailableCommands, s:Lf_CurrentCommand)
         let s:Lf_CurrentCommand = get(s:Lf_AvailableCommands, idx + 1, s:Lf_AvailableCommands[0])
     endif
-    call s:BuildExternalCommand()
-    call s:PrintCurrentCommandInfo()
+    call s:BuildLeaderfExternalCommand()
+    call s:PrintLeaderfCurrentCommandInfo()
 endfunction
 
-function! s:ListAvailableCommands(...) abort
+function! s:ListLeaderfAvailableCommands(...) abort
     return s:Lf_AvailableCommands
 endfunction
 
-command! -nargs=? -bang -complete=customlist,<SID>ListAvailableCommands ChangeLeaderfExternalCommand call <SID>ChangeExternalCommand(<bang>0, <q-args>)
+command! -nargs=? -bang -complete=customlist,<SID>ListLeaderfAvailableCommands ChangeLeaderfExternalCommand call <SID>ChangeLeaderfExternalCommand(<bang>0, <q-args>)
 
-function! s:ToggleFollowLinks() abort
+function! s:ToggleLeaderfFollowLinks() abort
     if s:Lf_FollowLinks == 0
         let s:Lf_FollowLinks = 1
         echo 'LeaderF follows symlinks!'
@@ -265,12 +265,12 @@ function! s:ToggleFollowLinks() abort
         let s:Lf_FollowLinks = 0
         echo 'LeaderF does not follow symlinks!'
     endif
-    call s:BuildExternalCommand()
+    call s:BuildLeaderfExternalCommand()
 endfunction
 
-command! ToggleLeaderfFollowLinks call <SID>ToggleFollowLinks()
+command! ToggleLeaderfFollowLinks call <SID>ToggleLeaderfFollowLinks()
 
-function! s:ToggleNoIgnores() abort
+function! s:ToggleLeaderfNoIgnores() abort
     if s:Lf_NoIgnores == 0
         let s:Lf_NoIgnores = 1
         echo 'LeaderF does not respect ignores!'
@@ -278,26 +278,26 @@ function! s:ToggleNoIgnores() abort
         let s:Lf_NoIgnores = 0
         echo 'LeaderF respects ignores!'
     endif
-    call s:BuildExternalCommand()
+    call s:BuildLeaderfExternalCommand()
 endfunction
 
-command! ToggleLeaderfNoIgnores call <SID>ToggleNoIgnores()
+command! ToggleLeaderfNoIgnores call <SID>ToggleLeaderfNoIgnores()
 
 function! s:LeaderfFileAll(dir) abort
     let current = s:Lf_NoIgnores
     try
         let s:Lf_NoIgnores = 1
-        call s:BuildExternalCommand()
+        call s:BuildLeaderfExternalCommand()
         execute 'LeaderfFile' a:dir
     finally
         let s:Lf_NoIgnores = current
-        call s:BuildExternalCommand()
+        call s:BuildLeaderfExternalCommand()
     endtry
 endfunction
 
 command! -nargs=? -complete=dir LeaderfFileAll call <SID>LeaderfFileAll(<q-args>)
 
-call s:DetectCurrentCommand()
-call s:BuildExternalCommand()
+call s:DetectLeaderfCurrentCommand()
+call s:BuildLeaderfExternalCommand()
 
 let g:loaded_leaderf_settings_vim = 1
