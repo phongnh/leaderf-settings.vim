@@ -121,13 +121,17 @@ let s:Lf_IgnoredRootDirs = [
             \ ]
 
 let g:Lf_RgConfig = [
+            \ '--max-columns=150',
             \ '-H',
             \ '--no-heading',
-            \ '--line-number',
-            \ '--column',
+            \ '--vimgrep',
+            \ '--smart-case',
             \ '--hidden',
-            \ '--smart-case'
             \ ]
+
+if g:Lf_FollowLinks
+    call add(g:Lf_RgConfig, '--follow')
+endif
 
 if get(g:, 'Lf_GrepIngoreVCS', 0)
     call add(g:Lf_RgConfig, '--no-ignore-vcs')
