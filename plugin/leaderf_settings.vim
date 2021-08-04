@@ -62,11 +62,12 @@ let g:Lf_PreviewResult = { 'BufTag': 0, 'Function': 0 }
 " Popup Settings
 let g:Lf_PopupHeight          = 0.30
 let g:Lf_PopupShowStatusline  = 0
-let g:Lf_PreviewInPopup       = 1
+let g:Lf_PreviewInPopup       = 0
 let g:Lf_PopupPreviewPosition = 'bottom'
 if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_win_set_config') && has('nvim-0.4.2'))
     if get(g:, 'Lf_Popup', 1)
         let g:Lf_WindowPosition = 'popup'
+        let g:Lf_PreviewInPopup = 1
     endif
 
     let s:Lf_WindowPosition = get(g:, 'Lf_WindowPosition', 'bottom')
@@ -75,10 +76,12 @@ if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_win_set_
         function! s:OnGoyoEnter() abort
             " Use popup in Goyo mode
             let g:Lf_WindowPosition = 'popup'
+            let g:Lf_PreviewInPopup = 1
         endfunction
 
         function! s:OnGoyoLeave() abort
             let g:Lf_WindowPosition = s:Lf_WindowPosition
+            let g:Lf_PreviewInPopup = g:Lf_WindowPosition == 'popup' ? 1 : 0
         endfunction
 
         augroup LeaderfGoyo
