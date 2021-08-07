@@ -124,10 +124,9 @@ let s:Lf_IgnoredRootDirs = [
             \ ]
 
 let g:Lf_RgConfig = [
-            \ '--max-columns=150',
             \ '-H',
             \ '--no-heading',
-            \ '--vimgrep',
+            \ '--line-number',
             \ '--smart-case',
             \ '--hidden',
             \ ]
