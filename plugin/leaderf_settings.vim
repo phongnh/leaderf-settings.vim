@@ -60,14 +60,19 @@ let g:Lf_CursorBlink   = 1
 let g:Lf_PreviewResult = { 'BufTag': 0, 'Function': 0 }
 
 " Popup Settings
-let g:Lf_PopupHeight          = 0.30
+let g:Lf_PopupPosition        = [5, 0]
+let g:Lf_PopupHeight          = 0.40
 let g:Lf_PopupShowStatusline  = 0
 let g:Lf_PreviewInPopup       = 0
 let g:Lf_PopupPreviewPosition = 'bottom'
 if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_win_set_config') && has('nvim-0.4.2'))
+    let g:Lf_PreviewInPopup = 1
+
     if get(g:, 'Lf_Popup', 1)
         let g:Lf_WindowPosition = 'popup'
-        let g:Lf_PreviewInPopup = 1
+    else
+        let g:Lf_PreviewHorizontalPosition = 'left'
+        let g:Lf_PreviewPopupWidth         = 999
     endif
 
     let s:Lf_WindowPosition = get(g:, 'Lf_WindowPosition', 'bottom')
@@ -76,12 +81,10 @@ if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_win_set_
         function! s:OnGoyoEnter() abort
             " Use popup in Goyo mode
             let g:Lf_WindowPosition = 'popup'
-            let g:Lf_PreviewInPopup = 1
         endfunction
 
         function! s:OnGoyoLeave() abort
             let g:Lf_WindowPosition = s:Lf_WindowPosition
-            let g:Lf_PreviewInPopup = g:Lf_WindowPosition == 'popup' ? 1 : 0
         endfunction
 
         augroup LeaderfGoyo
@@ -152,8 +155,10 @@ let g:Lf_GtagsGutentags = ''
 let g:Lf_Gtagslabel     = 'default'
 
 let g:Lf_CommandMap = {
-            \ '<F5>':  ['<F5>', '<C-z>'],
-            \ '<Esc>': ['<Esc>', '<C-g>'],
+            \ '<F5>':     ['<F5>',     '<C-z>'],
+            \ '<Esc>':    ['<Esc>',    '<C-g>'],
+            \ '<C-Up>':   ['<C-Up>',   '<S-Up>'],
+            \ '<C-Down>': ['<C-Down>', '<S-Down>'],
             \ }
 
 " These options are passed to external tools (rg, fd and pt, ...)
