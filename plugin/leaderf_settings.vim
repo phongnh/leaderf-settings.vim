@@ -19,7 +19,7 @@ if get(g:, 'Lf_SolarizedTheme', 0)
 
     augroup VimLeaderfSolarizedTheme
         autocmd!
-        autocmd ColorschemePre * call <SID>InitSolarizedColorscheme()
+        autocmd ColorschemePre solarized* call <SID>InitSolarizedColorscheme()
     augroup END
 endif
 
