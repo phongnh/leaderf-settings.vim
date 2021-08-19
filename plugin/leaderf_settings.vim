@@ -218,27 +218,27 @@ endfunction
 command! -bar LeaderfRoot     call <SID>LeaderfFileRoot()
 command! -bar LeaderfFileRoot call <SID>LeaderfFileRoot()
 
-let s:Lf_AvailableCommands = filter(['rg', 'fd'], 'executable(v:val)')
+let s:Lf_AvailableCommands = filter(['fd', 'rg'], 'executable(v:val)')
 
 if empty(s:Lf_AvailableCommands)
     command! -nargs=? -complete=dir LeaderfFileAll :LeaderfFile <args>
     finish
 endif
 
-let g:Lf_FindTool    = get(g:, 'Lf_FindTool', 'rg')
+let g:Lf_FindTool    = get(g:, 'Lf_FindTool', 'fd')
 let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 0)
 let s:Lf_FollowLinks = g:Lf_FollowLinks
 let g:Lf_NoIgnores   = get(g:, 'Lf_NoIgnores', 0)
 let s:Lf_NoIgnores   = g:Lf_NoIgnores
 
 let s:Lf_FindCommands = {
-            \ 'rg': 'rg "%s" --files --color never --no-ignore-vcs --ignore-dot --ignore-parent --hidden',
             \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden',
+            \ 'rg': 'rg "%s" --files --color never --no-ignore-vcs --ignore-dot --ignore-parent --hidden',
             \ }
 
 let s:Lf_FindAllCommands = {
-            \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden',
             \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden',
+            \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden',
             \ }
 
 function! s:BuildFindCommand() abort
