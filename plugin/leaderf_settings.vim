@@ -25,26 +25,59 @@ endif
 
 " Powerline Separator
 if get(g:, 'Lf_Powerline', 0)
-    let s:powerline_separator_styles = {
-                \ 'default':     { 'left': "\ue0b0", 'right': "\ue0b2" },
-                \ 'curvy':       { 'left': "\ue0b4", 'right': "\ue0b6" },
-                \ 'angly1':      { 'left': "\ue0b8", 'right': "\ue0be" },
-                \ 'angly2':      { 'left': "\ue0bc", 'right': "\ue0ba" },
-                \ 'angly3':      { 'left': "\ue0b8", 'right': "\ue0ba" },
-                \ 'angly4':      { 'left': "\ue0bc", 'right': "\ue0be" },
-                \ 'angly-left':  { 'left': "\ue0b8", 'right': "\ue0be" },
-                \ 'angly-right': { 'left': "\ue0bc", 'right': "\ue0ba" },
+    let s:powerline_default_separator_styles = {
+                \ '><': { 'left': "\ue0b0", 'right': "\ue0b2" },
+                \ '>(': { 'left': "\ue0b0", 'right': "\ue0b6" },
+                \ '>\': { 'left': "\ue0b0", 'right': "\ue0be" },
+                \ '>/': { 'left': "\ue0b0", 'right': "\ue0ba" },
+                \ ')(': { 'left': "\ue0b4", 'right': "\ue0b6" },
+                \ ')<': { 'left': "\ue0b4", 'right': "\ue0b2" },
+                \ ')\': { 'left': "\ue0b4", 'right': "\ue0be" },
+                \ ')/': { 'left': "\ue0b4", 'right': "\ue0ba" },
+                \ '\\': { 'left': "\ue0b8", 'right': "\ue0be" },
+                \ '\/': { 'left': "\ue0b8", 'right': "\ue0ba" },
+                \ '\<': { 'left': "\ue0b8", 'right': "\ue0b2" },
+                \ '\(': { 'left': "\ue0b8", 'right': "\ue0b6" },
+                \ '//': { 'left': "\ue0bc", 'right': "\ue0ba" },
+                \ '/\': { 'left': "\ue0bc", 'right': "\ue0be" },
+                \ '/<': { 'left': "\ue0bc", 'right': "\ue0b2" },
+                \ '/(': { 'left': "\ue0bc", 'right': "\ue0b6" },
+                \ '||': { 'left': '', 'right': '' },
                 \ }
+
+    let s:powerline_separator_styles = extend(deepcopy(s:powerline_default_separator_styles), {
+                \ 'default': copy(s:powerline_default_separator_styles['><']),
+                \ 'angle':   copy(s:powerline_default_separator_styles['><']),
+                \ 'curvy':   copy(s:powerline_default_separator_styles[')(']),
+                \ 'slant':   copy(s:powerline_default_separator_styles['//']),
+                \ })
 
     function! s:Rand() abort
         return str2nr(matchstr(reltimestr(reltime()), '\v\.@<=\d+')[1:])
     endfunction
 
-    function! s:GetSeparator(style) abort
-        let l:style = a:style
+    function! s:GetStyle(style) abort
+        if type(a:style) == type([])
+            let l:style = get(a:style, 0, 'default')
+        elseif type(a:style) == type('')
+            let l:style = a:style
+        else
+            let l:style = 'default'
+        endif
+
+        if empty(l:style)
+            let l:style = 'default'
+        endif
+
         if l:style ==? 'random'
             let l:style = keys(s:powerline_separator_styles)[s:Rand() % len(s:powerline_separator_styles)]
         endif
+
+        return l:style
+    endfunction
+
+    function! s:GetSeparator(style) abort
+        let l:style = s:GetStyle(a:style)
 
         return get(s:powerline_separator_styles, l:style, s:powerline_separator_styles['default'])
     endfunction
