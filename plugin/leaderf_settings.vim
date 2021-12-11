@@ -204,8 +204,6 @@ endif
 let g:Lf_FindTool    = get(g:, 'Lf_FindTool', 'fd')
 let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 0)
 let s:Lf_FollowLinks = g:Lf_FollowLinks
-let g:Lf_NoIgnores   = get(g:, 'Lf_NoIgnores', 0)
-let s:Lf_NoIgnores   = g:Lf_NoIgnores
 
 let s:Lf_FindCommands = {
             \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden',
@@ -213,18 +211,20 @@ let s:Lf_FindCommands = {
             \ }
 
 let s:Lf_FindAllCommands = {
-            \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden',
-            \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden',
+            \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden --follow',
+            \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden --follow',
             \ }
 
 function! s:BuildFindCommand() abort
     let l:cmd = s:Lf_FindCommands[s:Lf_CurrentCommand]
-    if s:Lf_NoIgnores
-        let l:cmd = s:Lf_FindAllCommands[s:Lf_CurrentCommand]
-    endif
     if s:Lf_FollowLinks
         let l:cmd .= ' --follow'
     endif
+    return l:cmd
+endfunction
+
+function! s:BuildFindAllCommand() abort
+    let l:cmd = s:Lf_FindAllCommands[s:Lf_CurrentCommand]
     return l:cmd
 endfunction
 
@@ -279,27 +279,11 @@ endfunction
 
 command! ToggleLeaderfFollowLinks call <SID>ToggleLeaderfFollowLinks()
 
-function! s:ToggleLeaderfNoIgnores() abort
-    if s:Lf_NoIgnores == 0
-        let s:Lf_NoIgnores = 1
-        echo 'LeaderF does not respect ignores!'
-    else
-        let s:Lf_NoIgnores = 0
-        echo 'LeaderF respects ignores!'
-    endif
-    call s:BuildLeaderfExternalCommand()
-endfunction
-
-command! ToggleLeaderfNoIgnores call <SID>ToggleLeaderfNoIgnores()
-
 function! s:LeaderfFileAll(dir) abort
-    let current = s:Lf_NoIgnores
     try
-        let s:Lf_NoIgnores = 1
-        call s:BuildLeaderfExternalCommand()
+        let g:Lf_ExternalCommand = s:BuildFindAllCommand()
         execute 'LeaderfFile' a:dir
     finally
-        let s:Lf_NoIgnores = current
         call s:BuildLeaderfExternalCommand()
     endtry
 endfunction
