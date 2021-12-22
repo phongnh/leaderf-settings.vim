@@ -148,12 +148,12 @@ let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 0)
 let s:Lf_FollowLinks = g:Lf_FollowLinks
 
 let s:Lf_FindCommands = {
-            \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden',
+            \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden --strip-cwd-prefix',
             \ 'rg': 'rg "%s" --files --color never --no-ignore-vcs --ignore-dot --ignore-parent --hidden',
             \ }
 
 let s:Lf_FindAllCommands = {
-            \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden --follow',
+            \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden --follow --strip-cwd-prefix',
             \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden --follow',
             \ }
 
