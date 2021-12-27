@@ -37,6 +37,7 @@ let g:Lf_PreviewResult = { 'BufTag': 0, 'Function': 0 }
 
 " Popup Settings
 let g:Lf_PopupPosition        = [5, 0]
+let g:Lf_PopupWidth           = get(g:, 'Lf_PopupWidth', 0.8)
 let g:Lf_PopupHeight          = 0.40
 let g:Lf_PopupShowStatusline  = 0
 let g:Lf_PreviewInPopup       = 0
