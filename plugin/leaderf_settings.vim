@@ -31,9 +31,27 @@ else
 endif
 
 let g:Lf_WindowHeight  = 0.30
-let g:Lf_MruMaxFiles   = 200
 let g:Lf_CursorBlink   = 1
 let g:Lf_PreviewResult = { 'BufTag': 0, 'Function': 0 }
+
+" MRU
+let g:Lf_MruMaxFiles    = 200
+let g:Lf_MruFileExclude = [
+            \ '*.fugitiveblame',
+            \ 'COMMIT_EDITMSG',
+            \ 'git-rebase-todo',
+            \ ]
+let g:Lf_MruWildIgnore = {
+            \ 'dir': [
+            \   '.git',
+            \   '.vim/plugged',
+            \   'vim/vim82',
+            \   'nvim/runtimeee',
+            \ ],
+            \ 'file': [
+            \   '*.fugitiveblame',
+            \ ],
+            \ }
 
 " Popup Settings
 let g:Lf_PopupPosition        = [5, 0]
