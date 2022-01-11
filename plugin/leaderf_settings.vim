@@ -105,6 +105,7 @@ let g:Lf_RgConfig = [
             \ '--hidden',
             \ ]
 
+let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 0)
 if g:Lf_FollowLinks
     call add(g:Lf_RgConfig, '--follow')
 endif
@@ -156,7 +157,6 @@ if empty(s:Lf_AvailableCommands)
 endif
 
 let g:Lf_FindTool    = get(g:, 'Lf_FindTool', 'fd')
-let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 0)
 let s:Lf_FollowLinks = g:Lf_FollowLinks
 
 let s:Lf_FindCommands = {
