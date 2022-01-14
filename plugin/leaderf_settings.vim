@@ -7,21 +7,72 @@ if exists('g:loaded_leaderf_settings_vim')
     finish
 endif
 
+" FullPath by default
+let g:Lf_DefaultMode = get(g:, 'Lf_DefaultMode', 'FullPath')
+
 if get(g:, 'Lf_SolarizedTheme', 0)
     let g:Lf_StlColorscheme = 'solarized'
+endif
 
-    function! s:InitSolarizedColorscheme() abort
+function! s:InitSolarizedColorscheme() abort
+    if get(g:, 'Lf_StlColorscheme', '') ==# 'solarized'
         call leaderf#colorscheme#solarized#init()
         let g:Lf_PopupPalette = leaderf#colorscheme#solarized#popup_init()
-    endfunction
+    endif
+endfunction
 
+function! s:FindLeaderfColorschemes() abort
+    let s:Lf_Colorschemes = map(split(globpath(&rtp, 'autoload/LeaderF/colorscheme/*.vim')), "fnamemodify(v:val, ':t:r')")
+    let s:Lf_ColorschemesCompletion = join(s:Lf_Colorschemes, "\n")
+endfunction
+
+function! s:ListLeaderfColorschemes(...) abort
+    return s:Lf_ColorschemesCompletion
+endfunction
+
+function! s:SetLeaderfTheme(colorscheme) abort
+    if index(s:Lf_Colorschemes, a:colorscheme) < 0
+        return
+    endif
+
+    " Reload palette
+    let l:colorscheme_path = findfile(printf('autoload/LeaderF/colorscheme/%s.vim', a:colorscheme), &rtp)
+    if !empty(l:colorscheme_path) && filereadable(l:colorscheme_path)
+        execute 'source ' . l:colorscheme_path
+    endif
+
+    let g:Lf_StlColorscheme = a:colorscheme
     call s:InitSolarizedColorscheme()
+    call leaderf#colorscheme#highlight('File', 0)
+endfunction
 
-    augroup VimLeaderfSolarizedTheme
-        autocmd!
-        autocmd ColorschemePre solarized* call <SID>InitSolarizedColorscheme()
-    augroup END
-endif
+function! s:ReloadLeaderfTheme() abort
+    let l:colorscheme = get(a:, 1, get(g:, 'colors_name', ''))
+
+    if l:colorscheme =~ 'solarized\|soluarized'
+        let l:colorscheme = 'solarized'
+    endif
+
+    if l:colorscheme ==# 'gruvbox' || l:colorscheme =~ 'gruvbox8'
+        let l:colorscheme = 'gruvbox_material'
+    endif
+
+    if index(s:Lf_Colorschemes, l:colorscheme) < 0
+        let l:colorscheme = tolower(l:colorscheme)
+    endif
+
+    if index(s:Lf_Colorschemes, l:colorscheme) < 0
+        let l:colorscheme = substitute(l:colorscheme, '-', '_', 'g')
+    endif
+
+    call s:SetLeaderfTheme(l:colorscheme)
+endfunction
+
+augroup VimLeaderfColorscheme
+    autocmd!
+    autocmd VimEnter * call <SID>FindLeaderfColorschemes() | call <SID>InitSolarizedColorscheme()
+    autocmd ColorScheme * if !has('vim_starting') | call <SID>ReloadLeaderfTheme() | endif
+augroup END
 
 " Powerline Separator
 if get(g:, 'Lf_Powerline_Fonts', 0)
