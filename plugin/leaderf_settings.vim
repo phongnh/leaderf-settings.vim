@@ -11,50 +11,74 @@ endif
 let g:Lf_DefaultMode = get(g:, 'Lf_DefaultMode', 'FullPath')
 
 if get(g:, 'Lf_SolarizedTheme', 0)
-    let g:Lf_StlColorscheme = 'solarized'
+    let g:Lf_StlColorscheme   = 'solarized'
+    let g:Lf_PopupColorscheme = 'solarized'
 endif
-
-function! s:InitSolarizedColorscheme() abort
-    if get(g:, 'Lf_StlColorscheme', '') ==# 'solarized'
-        call leaderf#colorscheme#solarized#init()
-        let g:Lf_PopupPalette = leaderf#colorscheme#solarized#popup_init()
-    endif
-endfunction
 
 function! s:FindLeaderfColorschemes() abort
     let s:Lf_Colorschemes = map(split(globpath(&rtp, 'autoload/LeaderF/colorscheme/*.vim')), "fnamemodify(v:val, ':t:r')")
     let s:Lf_ColorschemesCompletion = join(s:Lf_Colorschemes, "\n")
+    let s:Lf_PopupColorschemes = map(split(globpath(&rtp, 'autoload/LeaderF/colorscheme/popup/*.vim')), "fnamemodify(v:val, ':t:r')")
 endfunction
 
 function! s:ListLeaderfColorschemes(...) abort
     return s:Lf_ColorschemesCompletion
 endfunction
 
-function! s:SetLeaderfTheme(colorscheme) abort
+function! s:SetLeaderfColorscheme(colorscheme) abort
     if index(s:Lf_Colorschemes, a:colorscheme) < 0
         return
     endif
 
-    " Reload palette
+    " Reload colorscheme palette
     let l:colorscheme_path = findfile(printf('autoload/LeaderF/colorscheme/%s.vim', a:colorscheme), &rtp)
     if !empty(l:colorscheme_path) && filereadable(l:colorscheme_path)
         execute 'source ' . l:colorscheme_path
     endif
 
     let g:Lf_StlColorscheme = a:colorscheme
-    call s:InitSolarizedColorscheme()
     call leaderf#colorscheme#highlight('File', 0)
 endfunction
 
-function! s:ReloadLeaderfTheme() abort
-    let l:colorscheme = get(a:, 1, get(g:, 'colors_name', ''))
+function! s:SetLeaderfPopupColorscheme(colorscheme) abort
+    if index(s:Lf_PopupColorschemes, a:colorscheme) < 0
+        return
+    endif
 
-    if l:colorscheme =~ 'solarized\|soluarized'
+    if !exists('*g:LfDefineDefaultColors')
+        let g:Lf_PopupColorscheme = a:colorscheme
+        return
+    endif
+
+    " Reload popup colorscheme palette
+    " let l:colorscheme_path = findfile(printf('autoload/LeaderF/colorscheme/popup/%s.vim', a:colorscheme), &rtp)
+    " if !empty(l:colorscheme_path) && filereadable(l:colorscheme_path)
+    "     execute 'source ' . l:colorscheme_path
+    " endif
+
+    " unlet! g:Lf_PopupPalette
+    let g:Lf_PopupColorscheme = a:colorscheme
+    call leaderf#colorscheme#popup#load('File', g:Lf_PopupColorscheme)
+endfunction
+
+function! s:SetLeaderfTheme(colorscheme, popup_colorscheme) abort
+    call s:SetLeaderfColorscheme(a:colorscheme)
+    call s:SetLeaderfPopupColorscheme(a:popup_colorscheme)
+endfunction
+
+function! s:BuildColorscheme() abort
+    let l:colorscheme = get(g:, 'colors_name', '')
+    if has('vim_starting') && exists('g:Lf_StlColorscheme')
+        let l:colorscheme = g:Lf_StlColorscheme
+    endif
+
+    if l:colorscheme =~ 'solarized\|soluarized\|flattened'
         let l:colorscheme = 'solarized'
     endif
 
     if l:colorscheme ==# 'gruvbox' || l:colorscheme =~ 'gruvbox8'
-        let l:colorscheme = 'gruvbox_material'
+        " let l:colorscheme = 'gruvbox_material'
+        let l:colorscheme = 'default'
     endif
 
     if index(s:Lf_Colorschemes, l:colorscheme) < 0
@@ -65,13 +89,55 @@ function! s:ReloadLeaderfTheme() abort
         let l:colorscheme = substitute(l:colorscheme, '-', '_', 'g')
     endif
 
-    call s:SetLeaderfTheme(l:colorscheme)
+    if index(s:Lf_Colorschemes, l:colorscheme) < 0
+        let l:colorscheme = 'default'
+    endif
+
+    return l:colorscheme
+endfunction
+
+function! s:BuildPopupColorscheme() abort
+    let l:colorscheme = get(g:, 'colors_name', '')
+    if has('vim_starting') && exists('g:Lf_PopupColorscheme')
+        let l:colorscheme = g:Lf_PopupColorscheme
+    endif
+
+    if l:colorscheme =~ 'solarized\|soluarized\|flattened'
+        let l:colorscheme = 'solarized'
+    endif
+
+    if l:colorscheme ==# 'gruvbox' || l:colorscheme =~ 'gruvbox8'
+        " let l:colorscheme = 'gruvbox_default'
+        " let l:colorscheme = 'gruvbox_material'
+        let l:colorscheme = 'default'
+    endif
+
+    if index(s:Lf_PopupColorschemes, l:colorscheme) < 0
+        let l:colorscheme = tolower(l:colorscheme)
+    endif
+
+    if index(s:Lf_PopupColorschemes, l:colorscheme) < 0
+        let l:colorscheme = substitute(l:colorscheme, '-', '_', 'g')
+    endif
+
+    if index(s:Lf_PopupColorschemes, l:colorscheme) < 0
+        let l:colorscheme = 'default'
+    endif
+
+    return l:colorscheme
+endfunction
+
+function! s:ReloadLeaderfTheme() abort
+    let l:colorscheme = s:BuildColorscheme()
+    let l:popup_colorscheme = s:BuildPopupColorscheme()
+
+    call s:SetLeaderfTheme(l:colorscheme, l:popup_colorscheme)
 endfunction
 
 augroup VimLeaderfColorscheme
     autocmd!
-    autocmd VimEnter * call <SID>FindLeaderfColorschemes() | call <SID>InitSolarizedColorscheme()
-    autocmd ColorScheme * if !has('vim_starting') | call <SID>ReloadLeaderfTheme() | endif
+    autocmd VimEnter * call <SID>FindLeaderfColorschemes() | call <SID>ReloadLeaderfTheme()
+    autocmd ColorScheme * call <SID>ReloadLeaderfTheme()
 augroup END
 
 " Powerline Separator
