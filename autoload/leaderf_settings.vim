@@ -6,6 +6,7 @@ let g:Lf_FileRootMarkers = [
             \ 'Cargo.toml',
             \ 'shard.yml',
             \ 'go.mod',
+            \ '.root',
             \ ]
 
 let g:Lf_RootMarkers = ['.git', '.hg', '.svn', '.bzr', '_darcs'] + g:Lf_FileRootMarkers
