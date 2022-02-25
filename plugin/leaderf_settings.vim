@@ -16,9 +16,9 @@ if get(g:, 'Lf_SolarizedTheme', 0)
 endif
 
 function! s:FindLeaderfColorschemes() abort
-    let s:Lf_Colorschemes = map(split(globpath(&rtp, 'autoload/LeaderF/colorscheme/*.vim')), "fnamemodify(v:val, ':t:r')")
+    let s:Lf_Colorschemes = map(split(globpath(&rtp, 'autoload/leaderf/colorscheme/*.vim')), "fnamemodify(v:val, ':t:r')")
     let s:Lf_ColorschemesCompletion = join(s:Lf_Colorschemes, "\n")
-    let s:Lf_PopupColorschemes = map(split(globpath(&rtp, 'autoload/LeaderF/colorscheme/popup/*.vim')), "fnamemodify(v:val, ':t:r')")
+    let s:Lf_PopupColorschemes = map(split(globpath(&rtp, 'autoload/leaderf/colorscheme/popup/*.vim')), "fnamemodify(v:val, ':t:r')")
 endfunction
 
 function! s:ListLeaderfColorschemes(...) abort
@@ -31,7 +31,7 @@ function! s:SetLeaderfColorscheme(colorscheme) abort
     endif
 
     " Reload colorscheme palette
-    let l:colorscheme_path = findfile(printf('autoload/LeaderF/colorscheme/%s.vim', a:colorscheme), &rtp)
+    let l:colorscheme_path = findfile(printf('autoload/leaderf/colorscheme/%s.vim', a:colorscheme), &rtp)
     if !empty(l:colorscheme_path) && filereadable(l:colorscheme_path)
         execute 'source ' . l:colorscheme_path
     endif
@@ -51,7 +51,7 @@ function! s:SetLeaderfPopupColorscheme(colorscheme) abort
     endif
 
     " Reload popup colorscheme palette
-    " let l:colorscheme_path = findfile(printf('autoload/LeaderF/colorscheme/popup/%s.vim', a:colorscheme), &rtp)
+    " let l:colorscheme_path = findfile(printf('autoload/leaderf/colorscheme/popup/%s.vim', a:colorscheme), &rtp)
     " if !empty(l:colorscheme_path) && filereadable(l:colorscheme_path)
     "     execute 'source ' . l:colorscheme_path
     " endif
