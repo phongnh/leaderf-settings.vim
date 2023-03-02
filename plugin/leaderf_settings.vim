@@ -158,7 +158,7 @@ let g:Lf_CursorBlink   = 1
 let g:Lf_PreviewResult = { 'BufTag': 0, 'Function': 0 }
 
 " MRU
-let g:Lf_MruMaxFiles    = 200
+let g:Lf_MruMaxFiles    = 250
 let g:Lf_MruFileExclude = [
             \ '*.fugitiveblame',
             \ 'COMMIT_EDITMSG',
