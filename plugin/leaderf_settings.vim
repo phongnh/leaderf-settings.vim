@@ -167,9 +167,11 @@ let g:Lf_MruFileExclude = [
 let g:Lf_MruWildIgnore = {
             \ 'dir': [
             \   '.git',
+            \   '.gems',
             \   '.vim/plugged',
             \   'vim/vim82',
-            \   'nvim/runtimeee',
+            \   'vim/vim90',
+            \   'nvim/runtime',
             \ ],
             \ 'file': [
             \   '*.fugitiveblame',
