@@ -302,9 +302,10 @@ function! s:BuildRgConfig() abort
     return g:Lf_RgConfig
 endfunction
 
-command! -bar                   LeaderfRoot     call leaderf_settings#LeaderfFileRoot()
-command! -bar                   LeaderfFileRoot call leaderf_settings#LeaderfFileRoot()
-command! -nargs=? -complete=dir LeaderfFileAll  call leaderf_settings#LeaderfFileAll(<q-args>)
+command! -bar                   LeaderfFileSmartRoot execute 'LeaderfFile' leaderf_settings#FindProjectDir(expand('%:p:h'))
+command! -bar                   LeaderfRoot          call leaderf_settings#LeaderfFileRoot()
+command! -bar                   LeaderfFileRoot      call leaderf_settings#LeaderfFileRoot()
+command! -nargs=? -complete=dir LeaderfFileAll       call leaderf_settings#LeaderfFileAll(<q-args>)
 
 function! s:ToggleLeaderfFollowLinks() abort
     if g:Lf_FollowLinks == 0
