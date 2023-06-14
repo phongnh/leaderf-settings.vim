@@ -223,23 +223,6 @@ let g:Lf_UseMemoryCache = 0
 let g:Lf_NoChdir              = 1
 let g:Lf_WorkingDirectoryMode = 'c'
 
-let g:Lf_RgConfig = [
-            \ '-H',
-            \ '--no-heading',
-            \ '--line-number',
-            \ '--smart-case',
-            \ '--hidden',
-            \ ]
-
-let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 0)
-if g:Lf_FollowLinks
-    call add(g:Lf_RgConfig, '--follow')
-endif
-
-if get(g:, 'Lf_GrepIngoreVCS', 0)
-    call add(g:Lf_RgConfig, '--no-ignore-vcs')
-endif
-
 let g:Lf_Ctags         = get(g:, 'Lf_Ctags', 'ctags')
 let g:Lf_CtagsFuncOpts = {
             \ 'ruby': '--ruby-kinds=fFS',
@@ -260,117 +243,92 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?', '~$*', '*.bak', '*.exe', '*.o', '*.so', '*.py[co]']
             \ }
 
-command! -bar LeaderfFileSmartRoot execute 'LeaderfFile' leaderf_settings#FindProjectDir(expand('%:p:h'))
-
-function! s:LeaderfFileRoot() abort
-    let current = get(g:, 'Lf_WorkingDirectoryMode', 'c')
-    try
-        let g:Lf_WorkingDirectoryMode = 'AF'
-        :LeaderfFile
-    finally
-        let g:Lf_WorkingDirectoryMode = current
-    endtry
-endfunction
-
-command! -bar LeaderfRoot     call <SID>LeaderfFileRoot()
-command! -bar LeaderfFileRoot call <SID>LeaderfFileRoot()
-
-let s:Lf_AvailableCommands = filter(['fd', 'rg'], 'executable(v:val)')
-
-if empty(s:Lf_AvailableCommands)
-    command! -nargs=? -complete=dir LeaderfFileAll :LeaderfFile <args>
-    finish
-endif
-
 let g:Lf_FindTool    = get(g:, 'Lf_FindTool', 'fd')
-let s:Lf_FollowLinks = g:Lf_FollowLinks
-
-let s:Lf_FindCommands = {
-            \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden --strip-cwd-prefix',
-            \ 'rg': 'rg "%s" --files --color never --no-ignore-vcs --ignore-dot --ignore-parent --hidden',
-            \ }
-
-let s:Lf_FindAllCommands = {
-            \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden --follow --strip-cwd-prefix',
-            \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden --follow',
-            \ }
+let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 0)
 
 function! s:BuildFindCommand() abort
-    let l:cmd = s:Lf_FindCommands[s:Lf_CurrentCommand]
-    if s:Lf_FollowLinks
-        let l:cmd .= ' --follow'
+    let Lf_FindCommands = {
+                \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden --strip-cwd-prefix',
+                \ 'rg': 'rg "%s" --files --color never --no-ignore-vcs --ignore-dot --ignore-parent --hidden',
+                \ }
+
+    if g:Lf_FindTool ==# 'rg' && executable('rg')
+        let g:Lf_FindCommand = Lf_FindCommands['rg']
+    else
+        let g:Lf_FindCommand = Lf_FindCommands['fd']
     endif
-    return l:cmd
+
+    if g:Lf_FollowLinks
+        let g:Lf_FindCommand .= ' --follow'
+    endif
+
+    let g:Lf_ExternalCommand = g:Lf_FindCommand
+
+    return g:Lf_FindCommand
 endfunction
 
 function! s:BuildFindAllCommand() abort
-    let l:cmd = s:Lf_FindAllCommands[s:Lf_CurrentCommand]
-    return l:cmd
-endfunction
+    let Lf_FindAllCommands = {
+                \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden --follow --strip-cwd-prefix',
+                \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden --follow',
+                \ }
 
-function! s:DetectLeaderfCurrentCommand() abort
-    let idx = index(s:Lf_AvailableCommands, g:Lf_FindTool)
-    let s:Lf_CurrentCommand = get(s:Lf_AvailableCommands, idx > -1 ? idx : 0)
-endfunction
-
-function! s:BuildLeaderfExternalCommand() abort
-    let g:Lf_ExternalCommand = s:BuildFindCommand()
-endfunction
-
-function! s:PrintLeaderfCurrentCommandInfo() abort
-    echo 'LeaderF is using command `' . g:Lf_ExternalCommand . '`!'
-endfunction
-
-command! PrintLeaderfCurrentCommandInfo call <SID>PrintLeaderfCurrentCommandInfo()
-
-function! s:ChangeLeaderfExternalCommand(bang, command) abort
-    " Reset to default command
-    if a:bang
-        call s:DetectLeaderfCurrentCommand()
-    elseif strlen(a:command)
-        if index(s:Lf_AvailableCommands, a:command) == -1
-            return
-        endif
-        let s:Lf_CurrentCommand = a:command
+    if g:Lf_FindTool ==# 'rg' && executable('rg')
+        let g:Lf_FindAllCommand = Lf_FindAllCommands['rg']
     else
-        let idx = index(s:Lf_AvailableCommands, s:Lf_CurrentCommand)
-        let s:Lf_CurrentCommand = get(s:Lf_AvailableCommands, idx + 1, s:Lf_AvailableCommands[0])
+        let g:Lf_FindAllCommand = Lf_FindAllCommands['fd']
     endif
-    call s:BuildLeaderfExternalCommand()
-    call s:PrintLeaderfCurrentCommandInfo()
+
+    return g:Lf_FindAllCommand
 endfunction
 
-function! s:ListLeaderfAvailableCommands(...) abort
-    return s:Lf_AvailableCommands
+function! s:BuildRgConfig() abort
+    let g:Lf_RgConfig = [
+                \ '-H',
+                \ '--no-heading',
+                \ '--line-number',
+                \ '--smart-case',
+                \ '--hidden',
+                \ ]
+
+    if g:Lf_FollowLinks
+        call add(g:Lf_RgConfig, '--follow')
+    endif
+
+    if get(g:, 'Lf_GrepIngoreVCS', 0)
+        call add(g:Lf_RgConfig, '--no-ignore-vcs')
+    endif
+
+    return g:Lf_RgConfig
 endfunction
 
-command! -nargs=? -bang -complete=customlist,<SID>ListLeaderfAvailableCommands ChangeLeaderfExternalCommand call <SID>ChangeLeaderfExternalCommand(<bang>0, <q-args>)
+command! -bar                   LeaderfRoot     call leaderf_settings#LeaderfFileRoot()
+command! -bar                   LeaderfFileRoot call leaderf_settings#LeaderfFileRoot()
+command! -nargs=? -complete=dir LeaderfFileAll  call leaderf_settings#LeaderfFileAll(<q-args>)
 
 function! s:ToggleLeaderfFollowLinks() abort
-    if s:Lf_FollowLinks == 0
-        let s:Lf_FollowLinks = 1
+    if g:Lf_FollowLinks == 0
+        let g:Lf_FollowLinks = 1
         echo 'LeaderF follows symlinks!'
     else
-        let s:Lf_FollowLinks = 0
+        let g:Lf_FollowLinks = 0
         echo 'LeaderF does not follow symlinks!'
     endif
-    call s:BuildLeaderfExternalCommand()
+    call s:BuildFindCommand()
+    call s:BuildRgConfig()
 endfunction
 
 command! ToggleLeaderfFollowLinks call <SID>ToggleLeaderfFollowLinks()
 
-function! s:LeaderfFileAll(dir) abort
-    try
-        let g:Lf_ExternalCommand = s:BuildFindAllCommand()
-        execute 'LeaderfFile' a:dir
-    finally
-        call s:BuildLeaderfExternalCommand()
-    endtry
+function! s:SetupLeaderfSettings() abort
+    call s:BuildFindCommand()
+    call s:BuildFindAllCommand()
+    call s:BuildRgConfig()
 endfunction
 
-command! -nargs=? -complete=dir LeaderfFileAll call <SID>LeaderfFileAll(<q-args>)
-
-call s:DetectLeaderfCurrentCommand()
-call s:BuildLeaderfExternalCommand()
+augroup LeaderfSettings
+    autocmd!
+    autocmd VimEnter * call <SID>SetupLeaderfSettings()
+augroup END
 
 let g:loaded_leaderf_settings_vim = 1
