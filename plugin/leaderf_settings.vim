@@ -36,6 +36,17 @@ let g:Lf_PreviewResult = {
             \ 'Jumps': 1
             \ }
 
+" Root Markers
+let g:Lf_RootMarkers = ['.git', '.hg', '.svn', '.bzr', '_darcs'] + get(g:, 'Lf_FileRootMarkers', [
+            \ 'Gemfile',
+            \ 'rebar.config',
+            \ 'mix.exs',
+            \ 'Cargo.toml',
+            \ 'shard.yml',
+            \ 'go.mod',
+            \ '.root',
+            \ ])
+
 " MRU
 let g:Lf_MruMaxFiles    = 250
 let g:Lf_MruFileExclude = [
