@@ -85,10 +85,9 @@ if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win
         let g:Lf_PreviewPopupWidth         = 999
     endif
 
-    let s:Lf_WindowPosition = get(g:, 'Lf_WindowPosition', 'bottom')
-
-    if get(g:, 'Lf_GoyoIntegration', 1) && s:Lf_WindowPosition !=# 'popup'
+    if get(g:, 'Lf_GoyoIntegration', 1) && get(g:, 'Lf_WindowPosition', 'bottom') !=# 'popup'
         function! s:OnGoyoEnter() abort
+            let s:Lf_WindowPosition = get(g:, 'Lf_WindowPosition', 'bottom')
             " Use popup in Goyo mode
             let g:Lf_WindowPosition = 'popup'
         endfunction
