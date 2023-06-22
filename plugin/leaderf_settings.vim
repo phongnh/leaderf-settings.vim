@@ -75,7 +75,7 @@ let g:Lf_PopupHeight          = 0.40
 let g:Lf_PopupShowStatusline  = 0
 let g:Lf_PreviewInPopup       = 0
 let g:Lf_PopupPreviewPosition = 'bottom'
-if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_win_set_config') && has('nvim-0.4.2'))
+if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win') && has('nvim-0.4.2'))
     let g:Lf_PreviewInPopup = 1
 
     if get(g:, 'Lf_Popup', 1)
