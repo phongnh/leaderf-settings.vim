@@ -81,8 +81,8 @@ if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win
     if get(g:, 'Lf_Popup', 1)
         let g:Lf_WindowPosition = 'popup'
     else
-        let g:Lf_PreviewHorizontalPosition = 'left'
-        let g:Lf_PreviewPopupWidth         = 999
+        let g:Lf_PreviewPosition   = 'left'
+        let g:Lf_PreviewPopupWidth = 999
     endif
 
     if get(g:, 'Lf_GoyoIntegration', 1) && get(g:, 'Lf_WindowPosition', 'bottom') !=# 'popup'
