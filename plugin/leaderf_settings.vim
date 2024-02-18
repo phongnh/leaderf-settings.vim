@@ -173,9 +173,6 @@ endfunction
 
 function! s:BuildRgConfig() abort
     let g:Lf_RgConfig = [
-                \ '-H',
-                \ '--no-heading',
-                \ '--line-number',
                 \ '--smart-case',
                 \ '--hidden',
                 \ ]
