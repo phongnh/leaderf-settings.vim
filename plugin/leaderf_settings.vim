@@ -10,11 +10,6 @@ endif
 " FullPath by default
 let g:Lf_DefaultMode = get(g:, 'Lf_DefaultMode', 'FullPath')
 
-if get(g:, 'Lf_SolarizedTheme', 0)
-    let g:Lf_StlColorscheme   = 'solarized'
-    let g:Lf_PopupColorscheme = 'solarized'
-endif
-
 let g:Lf_ColorschemeMappings = extend({
             \ '^\(solarized\|soluarized\|flattened\)': 'solarized',
             \ '^gruvbox': 'gruvbox_material',
@@ -43,7 +38,8 @@ let g:Lf_PreviewResult = {
             \ 'Function':    0,
             \ 'Line':        0,
             \ 'Colorscheme': 0,
-            \ 'Jumps':       1
+            \ 'Rg':          1,
+            \ 'Jumps':       1,
             \ }
 
 " Root Markers
