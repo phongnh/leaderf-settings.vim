@@ -135,88 +135,17 @@ let g:Lf_WildIgnore = {
 let g:Lf_FindTool    = get(g:, 'Lf_FindTool', 'fd')
 let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 0)
 
-function! s:BuildFindCommand() abort
-    let Lf_FindCommands = {
-                \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden --strip-cwd-prefix',
-                \ 'rg': 'rg "%s" --files --color never --no-ignore-vcs --ignore-dot --ignore-parent --hidden',
-                \ }
-
-    if g:Lf_FindTool ==# 'rg' && executable('rg')
-        let g:Lf_FindCommand = Lf_FindCommands['rg']
-    else
-        let g:Lf_FindCommand = Lf_FindCommands['fd']
-    endif
-
-    if g:Lf_FollowLinks
-        let g:Lf_FindCommand .= ' --follow'
-    endif
-
-    let g:Lf_ExternalCommand = g:Lf_FindCommand
-
-    return g:Lf_FindCommand
-endfunction
-
-function! s:BuildFindAllCommand() abort
-    let Lf_FindAllCommands = {
-                \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden --follow --strip-cwd-prefix',
-                \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden --follow',
-                \ }
-
-    if g:Lf_FindTool ==# 'rg' && executable('rg')
-        let g:Lf_FindAllCommand = Lf_FindAllCommands['rg']
-    else
-        let g:Lf_FindAllCommand = Lf_FindAllCommands['fd']
-    endif
-
-    return g:Lf_FindAllCommand
-endfunction
-
-function! s:BuildRgConfig() abort
-    let g:Lf_RgConfig = [
-                \ '--smart-case',
-                \ '--hidden',
-                \ ]
-
-    if g:Lf_FollowLinks
-        call add(g:Lf_RgConfig, '--follow')
-    endif
-
-    if get(g:, 'Lf_GrepIngoreVCS', 0)
-        call add(g:Lf_RgConfig, '--no-ignore-vcs')
-    endif
-
-    return g:Lf_RgConfig
-endfunction
+call leaderf_settings#command#Init()
 
 command! -bar                   LeaderfFileRoot call leaderf_settings#LeaderfFileRoot()
 command! -nargs=? -complete=dir LeaderfFileAll  call leaderf_settings#LeaderfFileAll(<q-args>)
-
-function! s:ToggleLeaderfFollowLinks() abort
-    if g:Lf_FollowLinks == 0
-        let g:Lf_FollowLinks = 1
-        echo 'LeaderF follows symlinks!'
-    else
-        let g:Lf_FollowLinks = 0
-        echo 'LeaderF does not follow symlinks!'
-    endif
-    call s:BuildFindCommand()
-    call s:BuildRgConfig()
-endfunction
-
-command! ToggleLeaderfFollowLinks call <SID>ToggleLeaderfFollowLinks()
-
-function! s:SetupLeaderfSettings() abort
-    call s:BuildFindCommand()
-    call s:BuildFindAllCommand()
-    call s:BuildRgConfig()
-endfunction
+command! ToggleLeaderfFollowLinks call leaderf_settings#ToggleFollowLinks()
 
 command! -nargs=1 -complete=custom,leaderf_settings#ListLeaderfColorschemes      LeaderfSetColorscheme call leaderf_settings#SetLeaderfColorscheme(<q-args>)
 command! -nargs=1 -complete=custom,leaderf_settings#ListLeaderfPopupColorschemes LeaderfSetPopupColorscheme call leaderf_settings#SetLeaderfPopupColorscheme(<q-args>)
 
 augroup LeaderfSettings
     autocmd!
-    autocmd VimEnter * call <SID>SetupLeaderfSettings()
     autocmd VimEnter * call leaderf_settings#FindLeaderfColorschemes() | call leaderf_settings#ReloadLeaderfTheme()
     autocmd ColorScheme * call leaderf_settings#ReloadLeaderfTheme()
 augroup END
