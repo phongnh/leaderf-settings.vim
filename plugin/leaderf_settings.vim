@@ -15,6 +15,16 @@ if get(g:, 'Lf_SolarizedTheme', 0)
     let g:Lf_PopupColorscheme = 'solarized'
 endif
 
+let g:Lf_ColorschemeMappings = extend({
+            \ '^\(solarized\|soluarized\|flattened\)': 'solarized',
+            \ '^gruvbox': 'gruvbox_material',
+            \ }, get(g:, 'Lf_ColorschemeMappings', {}))
+
+let g:Lf_PopupColorschemeMappings = extend({
+            \ '^\(solarized\|soluarized\|flattened\)': 'solarized',
+            \ '^gruvbox': 'gruvbox_material',
+            \ }, get(g:, 'Lf_PopupColorschemeMappings', {}))
+
 " Powerline Separator
 if get(g:, 'Lf_Powerline_Fonts', 0)
     call leaderf_settings#powerline#SetSeparators(get(g:, 'Lf_Powerline_Style', 'default'))
@@ -141,13 +151,14 @@ command! -bar                   LeaderfFileRoot call leaderf_settings#LeaderfFil
 command! -nargs=? -complete=dir LeaderfFileAll  call leaderf_settings#LeaderfFileAll(<q-args>)
 command! ToggleLeaderfFollowLinks call leaderf_settings#ToggleFollowLinks()
 
-command! -nargs=1 -complete=custom,leaderf_settings#ListLeaderfColorschemes      LeaderfSetColorscheme call leaderf_settings#SetLeaderfColorscheme(<q-args>)
-command! -nargs=1 -complete=custom,leaderf_settings#ListLeaderfPopupColorschemes LeaderfSetPopupColorscheme call leaderf_settings#SetLeaderfPopupColorscheme(<q-args>)
+command! -nargs=1 -complete=custom,leaderf_settings#theme#List LeaderfSetTheme call leaderf_settings#theme#Set(<q-args>)
+command! -nargs=1 -complete=custom,leaderf_settings#popup#List LeaderfSetPopupTheme call leaderf_settings#popup#Set(<q-args>)
 
 augroup LeaderfSettings
     autocmd!
-    autocmd VimEnter * call leaderf_settings#FindLeaderfColorschemes() | call leaderf_settings#ReloadLeaderfTheme()
-    autocmd ColorScheme * call leaderf_settings#ReloadLeaderfTheme()
+    autocmd VimEnter * call leaderf_settings#theme#Init() | call leaderf_settings#popup#Init()
+    autocmd ColorScheme * call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
+    autocmd OptionSet background call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
 augroup END
 
 let g:loaded_leaderf_settings_vim = 1
