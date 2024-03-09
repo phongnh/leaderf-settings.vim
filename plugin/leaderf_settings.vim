@@ -17,7 +17,7 @@ endif
 
 " Powerline Separator
 if get(g:, 'Lf_Powerline_Fonts', 0)
-    let g:Lf_StlSeparator = leaderf_settings#GetPowerlineSeparator(get(g:, 'Lf_Powerline_Style', 'default'))
+    call leaderf_settings#powerline#SetSeparators(get(g:, 'Lf_Powerline_Style', 'default'))
 else
     let g:Lf_StlSeparator = { 'left': '', 'right': '' }
 endif
