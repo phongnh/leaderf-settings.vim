@@ -25,15 +25,15 @@ endif
 let g:Lf_WindowHeight  = 0.30
 let g:Lf_CursorBlink   = 1
 let g:Lf_PreviewResult = {
-            \ 'File': 0,
-            \ 'Buffer': 0,
-            \ 'Mru': 0,
-            \ 'Tag': 0,
-            \ 'BufTag': 0,
-            \ 'Function': 0,
-            \ 'Line': 0,
+            \ 'File':        0,
+            \ 'Buffer':      0,
+            \ 'Mru':         0,
+            \ 'Tag':         0,
+            \ 'BufTag':      0,
+            \ 'Function':    0,
+            \ 'Line':        0,
             \ 'Colorscheme': 0,
-            \ 'Jumps': 1
+            \ 'Jumps':       1
             \ }
 
 " Root Markers
