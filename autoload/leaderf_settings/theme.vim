@@ -19,10 +19,14 @@ function! leaderf_settings#theme#List(...) abort
 endfunction
 
 function! leaderf_settings#theme#Set(theme) abort
+    let g:Lf_StlColorscheme = a:theme
     let l:theme_path = findfile(printf('autoload/leaderf/colorscheme/%s.vim', a:theme), &rtp)
     execute 'source ' . l:theme_path
-    let g:Lf_StlColorscheme = a:theme
-    call leaderf#colorscheme#highlight('File', bufname('LeaderF') > -1 ? bufname('LeaderF') : 0)
+    call leaderf#colorscheme#highlight('File', 0)
+    if exists('g:Lf_File_StlMode')
+        call leaderf#colorscheme#highlightMode('File', g:Lf_File_StlMode)
+    endif
+    call leaderf#colorscheme#highlightBlank('File', 0)
 endfunction
 
 function! leaderf_settings#theme#Apply() abort
