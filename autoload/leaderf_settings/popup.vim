@@ -19,11 +19,6 @@ function! leaderf_settings#popup#List(...) abort
 endfunction
 
 function! leaderf_settings#popup#Set(theme) abort
-    if !exists('*g:LfDefineDefaultColors')
-        let g:Lf_PopupColorscheme = a:theme
-        return
-    endif
-
     let g:Lf_PopupColorscheme = a:theme
     call leaderf#colorscheme#popup#load('File', g:Lf_PopupColorscheme)
 endfunction
