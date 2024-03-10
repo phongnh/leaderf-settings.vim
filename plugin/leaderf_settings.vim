@@ -138,10 +138,10 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?', '~$*', '*.bak', '*.exe', '*.o', '*.so', '*.py[co]']
             \ }
 
-let g:Lf_FindTool      = get(g:, 'Lf_FindTool', 'fd')
-let g:Lf_FindIgnoreVCS = get(g:, 'Lf_FindIgnoreVCS', 1)
-let g:Lf_FollowLinks   = get(g:, 'Lf_FollowLinks', 0)
-let g:Lf_GrepIgnoreVCS = get(g:, 'Lf_GrepIgnoreVCS', 1)
+let g:Lf_FindTool        = get(g:, 'Lf_FindTool', 'fd')
+let g:Lf_FindNoIgnoreVCS = get(g:, 'Lf_FindNoIgnoreVCS', 0)
+let g:Lf_FollowLinks     = get(g:, 'Lf_FollowLinks', 0)
+let g:Lf_GrepNoIgnoreVCS = get(g:, 'Lf_GrepNoIgnoreVCS', 0)
 
 call leaderf_settings#command#Init()
 

@@ -11,7 +11,7 @@ function! s:BuildFindCommand() abort
     endif
 
     let g:Lf_FindCommand .= g:Lf_FollowLinks ? ' --follow' : ''
-    let g:Lf_FindCommand .= g:Lf_FindIgnoreVCS ? ' --ignore-vcs' : ' --no-ignore-vcs'
+    let g:Lf_FindCommand .= g:Lf_FindNoIgnoreVCS ? ' --no-ignore-vcs' : ''
 
     let g:Lf_ExternalCommand = g:Lf_FindCommand
 
@@ -40,7 +40,7 @@ function! s:BuildRgConfig() abort
                 \ ]
 
     let g:Lf_RgConfig += g:Lf_FollowLinks ? ['--follow'] : []
-    let g:Lf_RgConfig += g:Lf_GrepIgnoreVCS ? [] : ['--no-ignore-vcs']
+    let g:Lf_RgConfig += g:Lf_GrepNoIgnoreVCS ? ['--no-ignore-vcs'] : []
 
     return g:Lf_RgConfig
 endfunction
