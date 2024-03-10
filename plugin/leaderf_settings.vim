@@ -149,9 +149,6 @@ command! -bar                   LeaderfFileRoot call leaderf_settings#LeaderfFil
 command! -nargs=? -complete=dir LeaderfFileAll  call leaderf_settings#LeaderfFileAll(<q-args>)
 command! ToggleLeaderfFollowLinks call leaderf_settings#ToggleFollowLinks()
 
-command! -nargs=1 -complete=custom,leaderf_settings#theme#List LeaderfSetTheme call leaderf_settings#theme#Set(<q-args>)
-command! -nargs=1 -complete=custom,leaderf_settings#popup#List LeaderfSetPopupTheme call leaderf_settings#popup#Set(<q-args>)
-
 augroup LeaderfSettings
     autocmd!
     autocmd VimEnter * call leaderf_settings#theme#Init() | call leaderf_settings#popup#Init()
