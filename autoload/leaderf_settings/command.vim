@@ -1,6 +1,6 @@
 function! leaderf_settings#command#BuildFindCommand() abort
     let Lf_FindCommands = {
-                \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden --strip-cwd-prefix',
+                \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden',
                 \ 'rg': 'rg "%s" --files --color never --no-ignore-vcs --ignore-dot --ignore-parent --hidden',
                 \ }
 
@@ -21,7 +21,7 @@ endfunction
 
 function! leaderf_settings#command#BuildFindAllCommand() abort
     let Lf_FindAllCommands = {
-                \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden --follow --strip-cwd-prefix',
+                \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden --follow',
                 \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden --follow',
                 \ }
 
