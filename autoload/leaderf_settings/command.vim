@@ -1,4 +1,4 @@
-function! leaderf_settings#command#BuildFindCommand() abort
+function! s:BuildFindCommand() abort
     let Lf_FindCommands = {
                 \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden',
                 \ 'rg': 'rg "%s" --files --color never --no-ignore-vcs --ignore-dot --ignore-parent --hidden',
@@ -10,16 +10,15 @@ function! leaderf_settings#command#BuildFindCommand() abort
         let g:Lf_FindCommand = Lf_FindCommands['fd']
     endif
 
-    if g:Lf_FollowLinks
-        let g:Lf_FindCommand .= ' --follow'
-    endif
+    let g:Lf_FindCommand .= g:Lf_FollowLinks ? ' --follow' : ''
+    let g:Lf_FindCommand .= g:Lf_FindIgnoreVCS ? ' --ignore-vcs' : ' --no-ignore-vcs'
 
     let g:Lf_ExternalCommand = g:Lf_FindCommand
 
     return g:Lf_FindCommand
 endfunction
 
-function! leaderf_settings#command#BuildFindAllCommand() abort
+function! s:BuildFindAllCommand() abort
     let Lf_FindAllCommands = {
                 \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden --follow',
                 \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden --follow',
@@ -34,25 +33,20 @@ function! leaderf_settings#command#BuildFindAllCommand() abort
     return g:Lf_FindAllCommand
 endfunction
 
-function! leaderf_settings#command#BuildRgConfig() abort
+function! s:BuildRgConfig() abort
     let g:Lf_RgConfig = [
                 \ '--smart-case',
                 \ '--hidden',
                 \ ]
 
-    if g:Lf_FollowLinks
-        call add(g:Lf_RgConfig, '--follow')
-    endif
-
-    if get(g:, 'Lf_GrepIngoreVCS', 0)
-        call add(g:Lf_RgConfig, '--no-ignore-vcs')
-    endif
+    let g:Lf_RgConfig += g:Lf_FollowLinks ? ['--follow'] : []
+    let g:Lf_RgConfig += g:Lf_GrepIgnoreVCS ? [] : ['--no-ignore-vcs']
 
     return g:Lf_RgConfig
 endfunction
 
 function! leaderf_settings#command#Init() abort
-    call leaderf_settings#command#BuildFindCommand()
-    call leaderf_settings#command#BuildFindAllCommand()
-    call leaderf_settings#command#BuildRgConfig()
+    call s:BuildFindCommand()
+    call s:BuildFindAllCommand()
+    call s:BuildRgConfig()
 endfunction

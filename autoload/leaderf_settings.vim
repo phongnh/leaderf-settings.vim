@@ -25,6 +25,5 @@ function! leaderf_settings#ToggleFollowLinks() abort
         let g:Lf_FollowLinks = 0
         echo 'LeaderF does not follow symlinks!'
     endif
-    call leaderf_settings#command#BuildFindCommand()
-    call leaderf_settings#command#BuildRgConfig()
+    call leaderf_settings#command#Init()
 endfunction
