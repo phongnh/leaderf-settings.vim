@@ -1,7 +1,7 @@
 function! s:BuildFindCommand() abort
     let Lf_FindCommands = {
-                \ 'fd': 'fd "%s" --type file --color never --no-ignore-vcs --hidden',
-                \ 'rg': 'rg "%s" --files --color never --no-ignore-vcs --ignore-dot --ignore-parent --hidden',
+                \ 'fd': 'fd "%s" --type file --color never --hidden',
+                \ 'rg': 'rg "%s" --files --color never --ignore-dot --ignore-parent --hidden',
                 \ }
 
     if g:Lf_FindTool ==# 'rg' && executable('rg')
