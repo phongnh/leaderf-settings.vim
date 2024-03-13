@@ -140,7 +140,7 @@ let g:Lf_WildIgnore = {
 
 let g:Lf_FindTool        = get(g:, 'Lf_FindTool', 'fd')
 let g:Lf_FindNoIgnoreVCS = get(g:, 'Lf_FindNoIgnoreVCS', 0)
-let g:Lf_FollowLinks     = get(g:, 'Lf_FollowLinks', 0)
+let g:Lf_FollowLinks     = get(g:, 'Lf_FollowLinks', 1)
 let g:Lf_GrepNoIgnoreVCS = get(g:, 'Lf_GrepNoIgnoreVCS', 0)
 
 call leaderf_settings#command#Init()
