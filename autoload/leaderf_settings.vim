@@ -17,6 +17,59 @@ function! leaderf_settings#LeaderfFileAll(dir) abort
     endtry
 endfunction
 
+function! s:BuildFindCommand() abort
+    let Lf_FindCommands = {
+                \ 'fd': 'fd "%s" --type file --color never --hidden',
+                \ 'rg': 'rg "%s" --files --color never --ignore-dot --ignore-parent --hidden',
+                \ }
+
+    if g:Lf_FindTool ==# 'rg'
+        let g:Lf_FindCommand = Lf_FindCommands['rg']
+    else
+        let g:Lf_FindCommand = Lf_FindCommands['fd']
+    endif
+
+    let g:Lf_FindCommand .= g:Lf_FollowLinks ? ' --follow' : ''
+    let g:Lf_FindCommand .= g:Lf_FindNoIgnoreVCS ? ' --no-ignore-vcs' : ''
+
+    let g:Lf_ExternalCommand = g:Lf_FindCommand
+
+    return g:Lf_FindCommand
+endfunction
+
+function! s:BuildFindAllCommand() abort
+    let Lf_FindAllCommands = {
+                \ 'fd': 'fd "%s" --type file --color never --no-ignore --hidden --follow',
+                \ 'rg': 'rg "%s" --files --color never --no-ignore --hidden --follow',
+                \ }
+
+    if g:Lf_FindTool ==# 'rg'
+        let g:Lf_FindAllCommand = Lf_FindAllCommands['rg']
+    else
+        let g:Lf_FindAllCommand = Lf_FindAllCommands['fd']
+    endif
+
+    return g:Lf_FindAllCommand
+endfunction
+
+function! s:BuildRgConfig() abort
+    let g:Lf_RgConfig = [
+                \ '--smart-case',
+                \ '--hidden',
+                \ ]
+
+    let g:Lf_RgConfig += g:Lf_FollowLinks ? ['--follow'] : []
+    let g:Lf_RgConfig += g:Lf_GrepNoIgnoreVCS ? ['--no-ignore-vcs'] : []
+
+    return g:Lf_RgConfig
+endfunction
+
+function! leaderf_settings#SetupCommands() abort
+    call s:BuildFindCommand()
+    call s:BuildFindAllCommand()
+    call s:BuildRgConfig()
+endfunction
+
 function! leaderf_settings#ToggleFollowLinks() abort
     if g:Lf_FollowLinks == 0
         let g:Lf_FollowLinks = 1
@@ -25,5 +78,6 @@ function! leaderf_settings#ToggleFollowLinks() abort
         let g:Lf_FollowLinks = 0
         echo 'LeaderF does not follow symlinks!'
     endif
-    call leaderf_settings#command#Init()
+    call s:BuildFindCommand()
+    call s:BuildRgConfig()
 endfunction
