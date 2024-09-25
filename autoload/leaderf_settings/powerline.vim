@@ -43,7 +43,7 @@ function! s:GetStyle(style) abort
     return l:style
 endfunction
 
-function! s:SetTablineSeparators(style) abort
+function! s:SetStatuslineSeparators(style) abort
     let l:style = s:GetStyle(a:style)
     let g:Lf_StlSeparator = deepcopy(get(s:powerline_separator_styles, l:style, s:powerline_separator_styles['default']))
 endfunction
