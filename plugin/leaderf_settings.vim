@@ -20,8 +20,32 @@ let g:Lf_PopupColorschemeMappings = extend({
             \ '^gruvbox': 'gruvbox_material',
             \ }, get(g:, 'Lf_PopupColorschemeMappings', {}))
 
+" Nerdfonts
+let g:Lf_ShowDevIcons = get(g:, 'Lf_ShowDevIcons', 0)
+
+if g:Lf_ShowDevIcons
+    let g:Lf_DevIconsExactSymbols = {
+                \ '.code.ignore':        '',
+                \ '.fdignore':           '',
+                \ '.ignore':             '',
+                \ 'ignore':              '',
+                \ '.env.sample':         '',
+                \ '.envrc':              '',
+                \ '.vimrc.local':        '',
+                \ 'vimrc.local':         '',
+                \ '.editor.vimrc.local': '',
+                \ '.init.lua.local':     '',
+                \ 'init.lua.local':      '',
+                \ '.editor.lua.local':   '',
+                \ }
+    let g:Lf_DevIconsExtensionSymbols = {
+                \ 'vimrc': '',
+                \ 'envrc': '',
+                \ }
+endif
+
 " Powerline Separator
-if get(g:, 'Lf_Powerline_Fonts', 0)
+if get(g:, 'Lf_Powerline_Fonts', g:Lf_ShowDevIcons)
     call leaderf_settings#powerline#SetSeparators(get(g:, 'Lf_Powerline_Style', 'default'))
 else
     let g:Lf_StlSeparator = { 'left': '', 'right': '' }
@@ -75,10 +99,11 @@ let g:Lf_MruWildIgnore = {
             \ }
 
 " Popup Settings
-let g:Lf_PopupPosition        = [5, 0]
+let g:Lf_PopupPosition        = [7, 0]
 let g:Lf_PopupWidth           = get(g:, 'Lf_PopupWidth', 0.8)
-let g:Lf_PopupHeight          = 0.40
+let g:Lf_PopupHeight          = get(g:, 'Lf_PopupHeight', 0.45)
 let g:Lf_PopupShowStatusline  = 0
+let g:Lf_PopupShowBorder      = 0
 let g:Lf_PreviewInPopup       = 0
 let g:Lf_PopupPreviewPosition = 'bottom'
 if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win') && has('nvim-0.4.2'))
