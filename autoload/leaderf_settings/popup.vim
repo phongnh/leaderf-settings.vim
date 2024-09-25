@@ -1,3 +1,9 @@
+function! s:LoadTheme() abort
+    if !exists('s:Lf_PopupColorschemes')
+        let s:Lf_PopupColorschemes = map(split(globpath(&rtp, 'autoload/leaderf/colorscheme/popup/*.vim')), "fnamemodify(v:val, ':t:r')")
+    endif
+endfunction
+
 function! s:FindTheme() abort
     let g:Lf_PopupColorscheme = substitute(g:colors_name, '[ -]', '_', 'g')
     if index(s:Lf_PopupColorschemes, g:Lf_PopupColorscheme) > -1
@@ -24,19 +30,19 @@ function! leaderf_settings#popup#Set(theme) abort
 endfunction
 
 function! leaderf_settings#popup#Apply() abort
+    call s:LoadTheme()
     call s:FindTheme()
     call leaderf_settings#popup#Set(g:Lf_PopupColorscheme)
 endfunction
 
 function! leaderf_settings#popup#Init() abort
-    if !exists('s:Lf_PopupColorschemes')
-        let s:Lf_PopupColorschemes = map(split(globpath(&rtp, 'autoload/leaderf/colorscheme/popup/*.vim')), "fnamemodify(v:val, ':t:r')")
-    endif
-
-    if !exists('g:Lf_PopupColorscheme')
+    if has('vim_starting') && exists('g:Lf_PopupColorscheme') && g:Lf_PopupColorscheme ==# 'default'
+        call s:LoadTheme()
         call s:FindTheme()
         if g:Lf_PopupColorscheme !=# 'default'
             call leaderf_settings#popup#Set(g:Lf_PopupColorscheme)
         endif
+    elseif !exists('g:Lf_PopupColorscheme')
+        call leaderf_settings#popup#Apply()
     endif
 endfunction
