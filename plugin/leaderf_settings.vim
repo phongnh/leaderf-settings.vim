@@ -157,6 +157,7 @@ let g:Lf_CommandMap = {
             \ '<Esc>':    ['<Esc>',    '<C-g>'],
             \ '<C-Up>':   ['<C-Up>',   '<S-Up>'],
             \ '<C-Down>': ['<C-Down>', '<S-Down>'],
+            \ '<C-]>':    ['<C-]>',    '<C-v>'],
             \ }
 
 " These options are passed to external tools (rg, fd and pt, ...)
