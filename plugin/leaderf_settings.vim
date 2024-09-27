@@ -121,21 +121,11 @@ if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win
         let g:Lf_WindowPosition = 'popup'
     endif
 
-    if get(g:, 'Lf_GoyoIntegration', 1) && get(g:, 'Lf_WindowPosition', 'bottom') !=# 'popup'
-        function! s:OnGoyoEnter() abort
-            let s:Lf_WindowPosition = get(g:, 'Lf_WindowPosition', 'bottom')
-            " Use popup in Goyo mode
-            let g:Lf_WindowPosition = 'popup'
-        endfunction
-
-        function! s:OnGoyoLeave() abort
-            let g:Lf_WindowPosition = s:Lf_WindowPosition
-        endfunction
-
+    if get(g:, 'Lf_GoyoIntegration', 1)
         augroup LeaderfGoyo
             autocmd!
-            autocmd! User GoyoEnter nested call <SID>OnGoyoEnter()
-            autocmd! User GoyoLeave nested call <SID>OnGoyoLeave()
+            autocmd! User GoyoEnter nested call leaderf_settings#goyo#OnEnter()
+            autocmd! User GoyoLeave nested call leaderf_settings#goyo#OnLeave()
         augroup END
     endif
 endif
