@@ -76,7 +76,10 @@ let g:Lf_MruWildIgnore = {
             \   '.vim/plugged',
             \   'vim/vim82',
             \   'vim/vim90',
+            \   'vim/vim91',
             \   'nvim/runtime',
+            \   'nvim/lazy',
+            \   'nvim/lazy-rocks',
             \ ],
             \ 'file': [
             \   '*.fugitiveblame',
@@ -154,6 +157,7 @@ let g:Lf_CtagsFuncOpts = {
 let g:Lf_GtagsAutoGenerate = 0
 let g:Lf_GtagsAutoUpdate   = 0
 
+" Customize the mappings inside LeaderF's prompt
 let g:Lf_CommandMap = {
             \ '<F5>':     ['<F5>',     '<C-z>'],
             \ '<Esc>':    ['<Esc>',    '<C-g>'],
