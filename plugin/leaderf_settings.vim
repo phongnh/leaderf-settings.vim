@@ -51,21 +51,6 @@ else
     let g:Lf_StlSeparator = { 'left': '', 'right': '' }
 endif
 
-let g:Lf_WindowHeight  = 0.30
-let g:Lf_CursorBlink   = 1
-let g:Lf_PreviewResult = {
-            \ 'File':        0,
-            \ 'Buffer':      0,
-            \ 'Mru':         0,
-            \ 'Tag':         0,
-            \ 'BufTag':      0,
-            \ 'Function':    0,
-            \ 'Line':        0,
-            \ 'Colorscheme': 0,
-            \ 'Rg':          1,
-            \ 'Jumps':       1,
-            \ }
-
 " Root Markers
 let g:Lf_RootMarkers = ['.git', '.hg', '.svn', '.bzr', '_darcs'] + get(g:, 'Lf_FileRootMarkers', [
             \ 'Gemfile',
@@ -98,22 +83,39 @@ let g:Lf_MruWildIgnore = {
             \ ],
             \ }
 
-" Popup Settings
-let g:Lf_PopupPosition        = [7, 0]
-let g:Lf_PopupWidth           = get(g:, 'Lf_PopupWidth', 0.8)
-let g:Lf_PopupHeight          = get(g:, 'Lf_PopupHeight', 0.45)
-let g:Lf_PopupShowStatusline  = 0
-let g:Lf_PopupShowBorder      = 0
-let g:Lf_PreviewInPopup       = 0
-let g:Lf_PopupPreviewPosition = 'bottom'
-if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win') && has('nvim-0.4.2'))
-    let g:Lf_PreviewInPopup = 1
+" Window Settings
+" Autoresize LeaderF window height automattically
+let g:Lf_AutoResize        = 1
+let g:Lf_WindowPosition    = 'bottom'
+let g:Lf_WindowHeight      = 0.30
+let g:Lf_CursorBlink       = 1
+let g:Lf_PreviewPosition   = 'left'
+let g:Lf_PreviewPopupWidth = 999
+let g:Lf_PreviewResult     = {
+            \ 'File':        0,
+            \ 'Buffer':      0,
+            \ 'Mru':         0,
+            \ 'Tag':         0,
+            \ 'BufTag':      0,
+            \ 'Function':    0,
+            \ 'Line':        0,
+            \ 'Colorscheme': 0,
+            \ 'Rg':          1,
+            \ 'Jumps':       1,
+            \ }
 
+" Popup Settings
+let g:Lf_PopupPosition         = [7, 0]
+let g:Lf_PopupWidth            = get(g:, 'Lf_PopupWidth', 0.8)
+let g:Lf_PopupHeight           = get(g:, 'Lf_PopupHeight', 0.375)
+let g:Lf_PopupAutoAdjustHeight = 1
+let g:Lf_PopupShowStatusline   = 0
+let g:Lf_PopupShowBorder       = 0
+let g:Lf_PopupPreviewPosition  = 'bottom'
+
+if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win') && has('nvim-0.4.2'))
     if get(g:, 'Lf_Popup', 1)
         let g:Lf_WindowPosition = 'popup'
-    else
-        let g:Lf_PreviewPosition   = 'left'
-        let g:Lf_PreviewPopupWidth = 999
     endif
 
     if get(g:, 'Lf_GoyoIntegration', 1) && get(g:, 'Lf_WindowPosition', 'bottom') !=# 'popup'
