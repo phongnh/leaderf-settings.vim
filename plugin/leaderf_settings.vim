@@ -165,14 +165,15 @@ let g:Lf_WildIgnore = {
             \ }
 
 let g:Lf_FindTool        = get(g:, 'Lf_FindTool', 'fd')
-let g:Lf_FindTool        = g:Lf_FindTool ==# 'rg' && executable('rg') ? 'rg' : 'fd'
 let g:Lf_FindNoIgnoreVCS = get(g:, 'Lf_FindNoIgnoreVCS', 0)
 let g:Lf_FollowLinks     = get(g:, 'Lf_FollowLinks', 1)
 let g:Lf_GrepNoIgnoreVCS = get(g:, 'Lf_GrepNoIgnoreVCS', 0)
 
+call leaderf_settings#command#Init()
+
 augroup LeaderfSettings
     autocmd!
-    autocmd VimEnter * call leaderf_settings#SetupCommands() | call leaderf_settings#theme#Init() | call leaderf_settings#popup#Init()
+    autocmd VimEnter * call leaderf_settings#theme#Init() | call leaderf_settings#popup#Init()
     autocmd ColorScheme * call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
     autocmd OptionSet background call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
 augroup END
