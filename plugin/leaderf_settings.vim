@@ -131,7 +131,7 @@ if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win
 endif
 
 let g:Lf_CacheDirectory = expand('~/.cache')
-let g:Lf_UseCache       = 0  " rg/fd is enough fast, we don't need cache
+let g:Lf_UseCache       = get(g:, 'Lf_UseCache', 0) " rg/fd is enough fast, we don't need cache
 let g:Lf_NeedCacheTime  = 10 " 10 seconds
 let g:Lf_UseMemoryCache = 0
 
@@ -141,6 +141,7 @@ let g:Lf_WorkingDirectoryMode = 'c'
 let g:Lf_Ctags         = get(g:, 'Lf_Ctags', 'ctags')
 let g:Lf_CtagsFuncOpts = {
             \ 'ruby': '--ruby-kinds=fFS',
+            \ 'crystal': '--language-force=crystal',
             \ }
 
 " Disable Gtags
@@ -164,11 +165,13 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?', '~$*', '*.bak', '*.exe', '*.o', '*.so', '*.py[co]']
             \ }
 
-let g:Lf_FindTool        = get(g:, 'Lf_FindTool', 'fd')
+let g:Lf_DefaultExternaltool = 'find'
+
 let g:Lf_FindNoIgnoreVCS = get(g:, 'Lf_FindNoIgnoreVCS', 0)
 let g:Lf_FollowLinks     = get(g:, 'Lf_FollowLinks', 1)
 let g:Lf_GrepNoIgnoreVCS = get(g:, 'Lf_GrepNoIgnoreVCS', 0)
 
+" Setup commands
 call leaderf_settings#command#Init()
 
 augroup LeaderfSettings
