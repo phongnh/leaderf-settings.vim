@@ -173,7 +173,6 @@ call leaderf_settings#command#Init()
 
 augroup LeaderfSettings
     autocmd!
-    autocmd VimEnter * call leaderf_settings#theme#Init() | call leaderf_settings#popup#Init()
     autocmd ColorScheme * call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
     autocmd OptionSet background call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
 augroup END
