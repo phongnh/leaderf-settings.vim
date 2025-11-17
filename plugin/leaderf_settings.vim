@@ -169,8 +169,6 @@ let g:Lf_FindNoIgnoreVCS = get(g:, 'Lf_FindNoIgnoreVCS', 0)
 let g:Lf_FollowLinks     = get(g:, 'Lf_FollowLinks', 1)
 let g:Lf_GrepNoIgnoreVCS = get(g:, 'Lf_GrepNoIgnoreVCS', 0)
 
-call leaderf_settings#command#Init()
-
 augroup LeaderfSettings
     autocmd!
     autocmd ColorScheme * call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
