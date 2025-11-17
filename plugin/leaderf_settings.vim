@@ -10,16 +10,6 @@ endif
 " FullPath by default
 let g:Lf_DefaultMode = get(g:, 'Lf_DefaultMode', 'FullPath')
 
-let g:Lf_ColorschemeMappings = extend({
-            \ '^\(solarized\|soluarized\|flattened\)': 'solarized',
-            \ '^gruvbox': 'gruvbox_material',
-            \ }, get(g:, 'Lf_ColorschemeMappings', {}))
-
-let g:Lf_PopupColorschemeMappings = extend({
-            \ '^\(solarized\|soluarized\|flattened\)': 'solarized',
-            \ '^gruvbox': 'gruvbox_material',
-            \ }, get(g:, 'Lf_PopupColorschemeMappings', {}))
-
 " Nerdfonts
 let g:Lf_ShowDevIcons = get(g:, 'Lf_ShowDevIcons', 0)
 

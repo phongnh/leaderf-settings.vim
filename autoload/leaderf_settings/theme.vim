@@ -1,3 +1,9 @@
+" Theme mappings
+let s:Lf_ColorschemeMappings = extend({
+            \ '^\(solarized\|soluarized\|flattened\)': 'solarized',
+            \ '^gruvbox': 'gruvbox_material',
+            \ }, get(g:, 'Lf_ColorschemeMappings', {}))
+
 function! s:LoadTheme() abort
     if !exists('s:Lf_Colorschemes')
         let s:Lf_Colorschemes = map(split(globpath(&rtp, 'autoload/leaderf/colorscheme/*.vim')), "fnamemodify(v:val, ':t:r')")
@@ -11,7 +17,7 @@ function! s:FindTheme() abort
         return
     endif
 
-    for [l:pattern, l:theme] in items(g:Lf_ColorschemeMappings)
+    for [l:pattern, l:theme] in items(s:Lf_ColorschemeMappings)
         if match(g:Lf_StlColorscheme, l:pattern) > -1 && index(s:Lf_Colorschemes, l:theme) > -1
             let g:Lf_StlColorscheme = l:theme
             return
