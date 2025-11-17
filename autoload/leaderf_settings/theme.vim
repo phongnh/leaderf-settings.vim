@@ -6,7 +6,7 @@ function! s:LoadTheme() abort
 endfunction
 
 function! s:FindTheme() abort
-    let g:Lf_StlColorscheme = substitute(g:colors_name, '[ -]', '_', 'g')
+    let g:Lf_StlColorscheme = substitute(get(g:, 'colors_name', 'default'), '[ -]', '_', 'g')
     if index(s:Lf_Colorschemes, g:Lf_StlColorscheme) > -1
         return
     endif

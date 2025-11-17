@@ -5,7 +5,7 @@ function! s:LoadTheme() abort
 endfunction
 
 function! s:FindTheme() abort
-    let g:Lf_PopupColorscheme = substitute(g:colors_name, '[ -]', '_', 'g')
+    let g:Lf_PopupColorscheme = substitute(get(g:, 'colors_name', 'default'), '[ -]', '_', 'g')
     if index(s:Lf_PopupColorschemes, g:Lf_PopupColorscheme) > -1
         return
     endif
