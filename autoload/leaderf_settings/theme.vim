@@ -31,15 +31,21 @@ function! leaderf_settings#theme#List(...) abort
     return join(s:Lf_Colorschemes, "\n")
 endfunction
 
-function! leaderf_settings#theme#Set(theme) abort
-    let g:Lf_StlColorscheme = a:theme
-    let l:theme_path = findfile(printf('autoload/leaderf/colorscheme/%s.vim', a:theme), &rtp)
-    execute 'source ' . l:theme_path
+function! s:RefreshTheme() abort
     call leaderf#colorscheme#highlight('File', 0)
     if exists('g:Lf_File_StlMode')
         call leaderf#colorscheme#highlightMode('File', g:Lf_File_StlMode)
     endif
     call leaderf#colorscheme#highlightBlank('File', 0)
+endfunction
+
+function! leaderf_settings#theme#Set(theme) abort
+    let l:theme_path = findfile(printf('autoload/leaderf/colorscheme/%s.vim', a:theme), &rtp)
+    if !empty(l:theme_path) && filereadable(l:theme_path)
+        let g:Lf_StlColorscheme = a:theme
+        execute 'source' l:theme_path
+        autocmd BufEnter * ++once call <SID>RefreshTheme()
+    endif
 endfunction
 
 function! leaderf_settings#theme#Apply() abort
