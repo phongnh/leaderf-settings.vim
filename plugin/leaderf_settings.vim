@@ -120,7 +120,6 @@ if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win
     endif
 endif
 
-let g:Lf_CacheDirectory = expand('~/.cache')
 let g:Lf_UseCache       = 0  " rg/fd is enough fast, we don't need cache
 let g:Lf_NeedCacheTime  = 10 " 10 seconds
 let g:Lf_UseMemoryCache = 0
