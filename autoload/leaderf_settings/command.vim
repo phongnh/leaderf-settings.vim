@@ -4,8 +4,8 @@ function! s:BuildFindCommand() abort
                 \ 'rg': 'rg "%s" --files --color never --ignore-dot --ignore-parent --hidden',
                 \ }
     let g:Lf_FindCommand = l:Lf_FindCommands[g:Lf_FindTool ==# 'rg' ? 'rg' : 'fd']
-    let g:Lf_FindCommand .= g:Lf_FollowLinks ? ' --follow' : ''
-    let g:Lf_FindCommand .= g:Lf_FindNoIgnoreVCS ? ' --no-ignore-vcs' : ''
+    let g:Lf_FindCommand ..= g:Lf_FollowLinks ? ' --follow' : ''
+    let g:Lf_FindCommand ..= g:Lf_FindNoIgnoreVCS ? ' --no-ignore-vcs' : ''
     let g:Lf_ExternalCommand = g:Lf_FindCommand
     return g:Lf_FindCommand
 endfunction

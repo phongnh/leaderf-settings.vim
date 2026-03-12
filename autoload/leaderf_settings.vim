@@ -1,10 +1,10 @@
 function! leaderf_settings#LeaderfFileRoot() abort
     try
-        let current = get(g:, 'Lf_WorkingDirectoryMode', 'c')
+        let l:current = get(g:, 'Lf_WorkingDirectoryMode', 'c')
         let g:Lf_WorkingDirectoryMode = 'AF'
         :LeaderfFile
     finally
-        let g:Lf_WorkingDirectoryMode = current
+        let g:Lf_WorkingDirectoryMode = l:current
     endtry
 endfunction
 
