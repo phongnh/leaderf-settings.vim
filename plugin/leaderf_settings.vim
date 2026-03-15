@@ -114,8 +114,8 @@ if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win
     if get(g:, 'Lf_GoyoIntegration', 1)
         augroup LeaderfGoyo
             autocmd!
-            autocmd! User GoyoEnter nested call leaderf_settings#goyo#OnEnter()
-            autocmd! User GoyoLeave nested call leaderf_settings#goyo#OnLeave()
+            autocmd User GoyoEnter nested call leaderf_settings#goyo#OnEnter()
+            autocmd User GoyoLeave nested call leaderf_settings#goyo#OnLeave()
         augroup END
     endif
 endif
