@@ -147,16 +147,12 @@ let g:Lf_CommandMap = {
 
 " These options are passed to external tools (rg, fd and pt, ...)
 let g:Lf_ShowHidden  = 0
+let g:Lf_FollowLinks = get(g:, 'Lf_FollowLinks', 1)
 
 let g:Lf_WildIgnore = {
             \ 'dir': ['.svn', '.git', '.hg', 'node_modules', '.gems', 'gems'],
             \ 'file': ['*.sw?', '~$*', '*.bak', '*.exe', '*.o', '*.so', '*.py[co]']
             \ }
-
-let g:Lf_FindTool        = get(g:, 'Lf_FindTool', 'fd')
-let g:Lf_FindNoIgnoreVCS = get(g:, 'Lf_FindNoIgnoreVCS', 0)
-let g:Lf_FollowLinks     = get(g:, 'Lf_FollowLinks', 1)
-let g:Lf_GrepNoIgnoreVCS = get(g:, 'Lf_GrepNoIgnoreVCS', 0)
 
 augroup LeaderfSettings
     autocmd!

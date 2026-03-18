@@ -10,10 +10,10 @@ endfunction
 
 function! leaderf_settings#LeaderfFileAll(dir) abort
     try
-        let g:Lf_ExternalCommand = g:Lf_FindAllCommand
+        let g:Lf_ExternalCommand = get(g:, 'Lf_FindAllCommand', '')
         execute 'LeaderfFile' a:dir
     finally
-        let g:Lf_ExternalCommand = g:Lf_FindCommand
+        let g:Lf_ExternalCommand = get(g:, 'Lf_FindCommand', '')
     endtry
 endfunction
 
