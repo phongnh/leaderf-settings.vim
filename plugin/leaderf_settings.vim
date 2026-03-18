@@ -35,8 +35,8 @@ if g:Lf_ShowDevIcons
 endif
 
 " Powerline Separator
-if get(g:, 'Lf_Powerline_Fonts', g:Lf_ShowDevIcons)
-    call leaderf_settings#powerline#SetSeparators(get(g:, 'Lf_Powerline_Style', 'default'))
+if get(g:, 'Lf_PowerlineFonts', g:Lf_ShowDevIcons)
+    call leaderf_settings#powerline#SetSeparators(get(g:, 'Lf_PowerlineStyle', 'default'))
 else
     let g:Lf_StlSeparator = { 'left': '', 'right': '' }
 endif
