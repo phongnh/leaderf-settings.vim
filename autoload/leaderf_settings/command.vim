@@ -25,7 +25,6 @@ function! s:BuildRgConfig() abort
                 \ '--hidden',
                 \ ]
     let g:Lf_RgConfig += g:Lf_FollowLinks ? ['--follow'] : []
-    let g:Lf_RgConfig += g:Lf_GrepNoIgnoreVCS ? ['--no-ignore-vcs'] : []
     return g:Lf_RgConfig
 endfunction
 
