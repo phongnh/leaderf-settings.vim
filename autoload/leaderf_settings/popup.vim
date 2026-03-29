@@ -1,6 +1,6 @@
 " Theme mappings
 let s:Lf_PopupColorschemeMappings = extend({
-            \ '^\(solarized\|soluarized\|flattened\|NeoSolarized\)': 'solarized',
+            \ '^\(solarized\|flattened\|NeoSolarized\)': 'solarized',
             \ '^gruvbox': 'gruvbox_material',
             \ }, get(g:, 'Lf_PopupColorschemeMappings', {}))
 
