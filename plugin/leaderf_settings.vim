@@ -158,6 +158,12 @@ augroup LeaderfSettings
     autocmd!
     autocmd ColorScheme * call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
     autocmd OptionSet background call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
+    if v:vim_did_enter
+        call leaderf_settings#theme#Init()
+        call leaderf_settings#popup#Init()
+    else
+        autocmd VimEnter * ++once call leaderf_settings#theme#Init() | call leaderf_settings#popup#Init()
+    endif
 augroup END
 
 command! ToggleLeaderfFollowLinks call leaderf_settings#ToggleFollowLinks()
