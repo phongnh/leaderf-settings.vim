@@ -8,7 +8,7 @@ function! s:BuildFindCommand() abort
         let g:Lf_FindCommand ..= g:Lf_FollowLinks ? ' --follow' : ''
         let g:Lf_ExternalCommand = g:Lf_FindCommand
     elseif executable('ugrep')
-        let g:Lf_FindCommand = 'ugrep "" "%s" -IR.l --color never --ignore-files --ignore-files=.ignore'
+        let g:Lf_FindCommand = 'ugrep "" "%s" -IR.l --color=never --ignore-files --ignore-files=.ignore'
         let g:Lf_FindCommand ..= g:Lf_FollowLinks ? '' : ' -p'
         let g:Lf_ExternalCommand = g:Lf_FindCommand
     endif
@@ -20,7 +20,7 @@ function! s:BuildFindAllCommand() abort
     elseif executable('rg')
         let g:Lf_FindAllCommand = 'rg "%s" --files --color never --no-ignore --hidden --follow'
     elseif executable('ugrep')
-        let g:Lf_FindAllCommand = 'ugrep "" "%s" -IR.l --color never'
+        let g:Lf_FindAllCommand = 'ugrep "" "%s" -IR.l --color=never'
     endif
 endfunction
 
