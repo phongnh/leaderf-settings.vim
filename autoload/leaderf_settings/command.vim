@@ -20,7 +20,7 @@ function! s:BuildFindAllCommand() abort
     elseif executable('rg')
         let g:Lf_FindAllCommand = 'rg "%s" --files --color never --no-ignore --hidden --follow'
     elseif executable('ugrep')
-        let g:Lf_FindAllCommand = 'ugrep "" "%s" -IR.l --color=never'
+        let g:Lf_FindAllCommand = 'ugrep "" "%s" -IR.l --color=never --no-ignore-files --exclude-dir=.git'
     endif
 endfunction
 
