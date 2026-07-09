@@ -154,7 +154,7 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?', '~$*', '*.bak', '*.exe', '*.o', '*.so', '*.py[co]']
             \ }
 
-function! s:init() abort
+function! s:Init() abort
     call leaderf_settings#command#Init()
     call leaderf_settings#theme#Init()
     call leaderf_settings#popup#Init()
@@ -165,9 +165,9 @@ augroup LeaderfSettings
     autocmd ColorScheme * call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
     autocmd OptionSet background call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
     if v:vim_did_enter
-        call s:init()
+        call s:Init()
     else
-        autocmd VimEnter * ++once call s:init()
+        autocmd VimEnter * ++once call s:Init()
     endif
 augroup END
 
