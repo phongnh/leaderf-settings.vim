@@ -52,6 +52,9 @@ let g:Lf_RootMarkers = ['.git', '.hg', '.svn', '.bzr', '_darcs'] + get(g:, 'Lf_F
             \ '.root',
             \ ])
 
+let g:Lf_NoChdir              = 1
+let g:Lf_WorkingDirectoryMode = 'c'
+
 " MRU
 let g:Lf_MruMaxFiles    = 250
 let g:Lf_MruFileExclude = [
@@ -78,13 +81,12 @@ let g:Lf_MruWildIgnore = {
 
 " Window Settings
 " Autoresize LeaderF window height automattically
-let g:Lf_AutoResize        = 1
-let g:Lf_WindowPosition    = 'bottom'
-let g:Lf_WindowHeight      = 0.30
-let g:Lf_CursorBlink       = 1
-let g:Lf_PreviewPosition   = 'left'
-let g:Lf_PreviewPopupWidth = 999
-let g:Lf_PreviewResult     = {
+let g:Lf_AutoResize     = 1
+let g:Lf_WindowPosition = 'bottom'
+let g:Lf_WindowHeight   = 0.30
+
+" Auto Preview
+let g:Lf_PreviewResult = {
             \ 'File':        0,
             \ 'Buffer':      0,
             \ 'Mru':         0,
@@ -98,13 +100,11 @@ let g:Lf_PreviewResult     = {
             \ }
 
 " Popup Settings
-let g:Lf_PopupPosition         = [7, 0]
-let g:Lf_PopupWidth            = get(g:, 'Lf_PopupWidth', 0.8)
-let g:Lf_PopupHeight           = get(g:, 'Lf_PopupHeight', 0.375)
-let g:Lf_PopupAutoAdjustHeight = 1
-let g:Lf_PopupShowStatusline   = 0
-let g:Lf_PopupShowBorder       = 0
-let g:Lf_PopupPreviewPosition  = 'bottom'
+let g:Lf_PopupPosition        = [5, 0]
+let g:Lf_PopupWidth           = get(g:, 'Lf_PopupWidth', 0.8)
+let g:Lf_PopupHeight          = get(g:, 'Lf_PopupHeight', 0.375)
+let g:Lf_PopupShowStatusline  = 0
+let g:Lf_PopupPreviewPosition = 'bottom'
 
 if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win') && has('nvim-0.4.2'))
     if get(g:, 'Lf_Popup', 1)
@@ -120,13 +120,12 @@ if (exists('*popup_create') && has('patch-8.1.1615')) || (exists('*nvim_open_win
     endif
 endif
 
+let g:Lf_CursorBlink    = 1
 let g:Lf_UseCache       = 0  " rg/fd is enough fast, we don't need cache
 let g:Lf_NeedCacheTime  = 10 " 10 seconds
 let g:Lf_UseMemoryCache = 0
 
-let g:Lf_NoChdir              = 1
-let g:Lf_WorkingDirectoryMode = 'c'
-
+" Ctags
 let g:Lf_Ctags         = get(g:, 'Lf_Ctags', 'ctags')
 let g:Lf_CtagsFuncOpts = {
             \ 'ruby': '--ruby-kinds=fFS',
@@ -154,26 +153,20 @@ let g:Lf_WildIgnore = {
             \ 'file': ['*.sw?', '~$*', '*.bak', '*.exe', '*.o', '*.so', '*.py[co]']
             \ }
 
-function! s:Init() abort
-    call leaderf_settings#command#Init()
-    call leaderf_settings#theme#Init()
-    call leaderf_settings#popup#Init()
-endfunction
-
 augroup LeaderfSettings
     autocmd!
     autocmd ColorScheme * call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
     autocmd OptionSet background call leaderf_settings#theme#Apply() | call leaderf_settings#popup#Apply()
     if v:vim_did_enter
-        call s:Init()
+        call leaderf_settings#Init()
     else
-        autocmd VimEnter * ++once call s:Init()
+        autocmd VimEnter * ++once call leaderf_settings#Init()
     endif
 augroup END
 
 command! ToggleLeaderfFollowLinks call leaderf_settings#ToggleFollowLinks()
 
-command! -bar                   LeaderfFileRoot call leaderf_settings#LeaderfFileRoot()
-command! -nargs=? -complete=dir LeaderfFileAll  call leaderf_settings#LeaderfFileAll(<q-args>)
+command! -bar                   LeaderfFileRoot call leaderf_settings#FileRoot()
+command! -nargs=? -complete=dir LeaderfFileAll  call leaderf_settings#FileAll(<q-args>)
 
 let g:loaded_leaderf_settings_vim = 1

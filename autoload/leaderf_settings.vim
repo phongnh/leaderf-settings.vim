@@ -1,14 +1,14 @@
-function! leaderf_settings#LeaderfFileRoot() abort
+function! leaderf_settings#FileRoot() abort
     try
         let l:current = get(g:, 'Lf_WorkingDirectoryMode', 'c')
         let g:Lf_WorkingDirectoryMode = 'AF'
-        :LeaderfFile
+        execute 'LeaderfFile'
     finally
         let g:Lf_WorkingDirectoryMode = l:current
     endtry
 endfunction
 
-function! leaderf_settings#LeaderfFileAll(dir) abort
+function! leaderf_settings#FileAll(dir) abort
     try
         let g:Lf_ExternalCommand = get(g:, 'Lf_FindAllCommand', '')
         execute 'LeaderfFile' a:dir
@@ -26,4 +26,10 @@ function! leaderf_settings#ToggleFollowLinks() abort
         echo 'LeaderF does not follow symlinks!'
     endif
     call leaderf_settings#command#Init()
+endfunction
+
+function! leaderf_settings#Init() abort
+    call leaderf_settings#command#Init()
+    call leaderf_settings#theme#Init()
+    call leaderf_settings#popup#Init()
 endfunction
